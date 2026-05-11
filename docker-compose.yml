@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:19
+    image: postgres:16
     container_name: arlet-db
     restart: unless-stopped
     environment:
