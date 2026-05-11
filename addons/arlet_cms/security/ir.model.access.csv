@@ -1,4 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_arlet_locale_public,arlet.locale public,model_arlet_locale,,1,0,0,0
+access_arlet_locale_user,arlet.locale user,model_arlet_locale,base.group_user,1,1,1,1
 access_arlet_event_public,arlet.event public,model_arlet_event,,1,0,0,0
 access_arlet_event_user,arlet.event user,model_arlet_event,base.group_user,1,1,1,1
 access_arlet_event_translation_public,arlet.event.translation public,model_arlet_event_translation,,1,0,0,0

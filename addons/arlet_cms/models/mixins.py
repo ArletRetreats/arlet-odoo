@@ -16,7 +16,7 @@ class ArletTranslatableMixin(models.AbstractModel):
         if locale == 'en':
             val = getattr(self, field_name, '') or ''
         else:
-            trans = self.translation_ids.filtered(lambda t: t.locale == locale)
+            trans = self.translation_ids.filtered(lambda t: t.locale.code == locale)
             val = getattr(trans[0], field_name, None) if trans else None
             val = val or getattr(self, field_name, '') or ''
         # Cast Markup / False / None to plain str for JSON serialisation
@@ -34,6 +34,6 @@ class ArletBaseTranslation(models.AbstractModel):
     _name = 'arlet.base.translation'
     _rec_name = 'locale'
 
-    locale = fields.Selection([
-        ('fr', 'French'),
-    ], required=True, string='Language')
+    locale = fields.Many2one(
+        'arlet.locale', required=True, string='Language', ondelete='restrict',
+    )

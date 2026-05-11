@@ -46,7 +46,7 @@ class ArletProfileTranslation(models.Model):
     list_items = fields.Text(string='Certifications — one per line')
 
     _sql_constraints = [(
-        'locale_profile_unique', 'UNIQUE(profile_id, locale)',
+        'locale_profile_unique', 'UNIQUE(profile_id, locale_id)',
         'A translation for this locale already exists for this profile.',
     )]
 
@@ -187,7 +187,7 @@ class ArletContentBlockTranslation(models.Model):
     right_items = fields.Text(string='Right Items — one per line')
 
     _sql_constraints = [(
-        'locale_block_unique', 'UNIQUE(block_id, locale)',
+        'locale_block_unique', 'UNIQUE(block_id, locale_id)',
         'A translation for this locale already exists for this block.',
     )]
 
@@ -264,6 +264,6 @@ class ArletArticleTranslation(models.Model):
     intro = fields.Text(string='Intro Paragraphs — one per line')
 
     _sql_constraints = [(
-        'locale_article_unique', 'UNIQUE(article_id, locale)',
+        'locale_article_unique', 'UNIQUE(article_id, locale_id)',
         'A translation for this locale already exists for this article.',
     )]

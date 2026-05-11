@@ -11,6 +11,8 @@
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
+        'data/arlet_locale_data.xml',
+        'views/arlet_locale_views.xml',
         'views/arlet_location_views.xml',
         'views/arlet_event_views.xml',
         'views/arlet_article_views.xml',

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="arlet_locale_view_list" model="ir.ui.view">
+        <field name="name">arlet.locale.list</field>
+        <field name="model">arlet.locale</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="arlet_locale_view_form" model="ir.ui.view">
+        <field name="name">arlet.locale.form</field>
+        <field name="model">arlet.locale</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code" placeholder="e.g. fr"/>
+                        <field name="name" placeholder="e.g. French"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="arlet_locale_action" model="ir.actions.act_window">
+        <field name="name">Locales</field>
+        <field name="res_model">arlet.locale</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -29,4 +29,15 @@
               action="arlet_profile_action"
               sequence="40"/>
 
+    <menuitem id="menu_arlet_configuration"
+              name="Configuration"
+              parent="menu_arlet_cms_root"
+              sequence="100"/>
+
+    <menuitem id="menu_arlet_locales"
+              name="Locales"
+              parent="menu_arlet_configuration"
+              action="arlet_locale_action"
+              sequence="10"/>
+
 </odoo>

@@ -55,7 +55,7 @@ class ArletEventTranslation(models.Model):
     description = fields.Text(string='Description')
 
     _sql_constraints = [(
-        'locale_event_unique', 'UNIQUE(event_id, locale)',
+        'locale_event_unique', 'UNIQUE(event_id, locale_id)',
         'A translation for this locale already exists for this event.',
     )]
 
@@ -100,7 +100,7 @@ class ArletEventProgramDayTranslation(models.Model):
     theme = fields.Char(string='Day Theme')
 
     _sql_constraints = [(
-        'locale_day_unique', 'UNIQUE(day_id, locale)',
+        'locale_day_unique', 'UNIQUE(day_id, locale_id)',
         'A translation for this locale already exists for this day.',
     )]
 
@@ -140,6 +140,6 @@ class ArletEventProgramSlotTranslation(models.Model):
     activity = fields.Char(string='Activity')
 
     _sql_constraints = [(
-        'locale_slot_unique', 'UNIQUE(slot_id, locale)',
+        'locale_slot_unique', 'UNIQUE(slot_id, locale_id)',
         'A translation for this locale already exists for this slot.',
     )]
