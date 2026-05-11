@@ -71,6 +71,8 @@ class ArletEvent(models.Model):
                 'title': self.owner_id.title or '',
                 'label': self.owner_id.label or '',
                 'image': self.owner_id.image or '',
+                'heroBg': self.owner_id.hero_bg or '',
+                'heroBgAlt': self.owner_id.hero_bg_alt or '',
             }
         return data
 

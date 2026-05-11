@@ -25,6 +25,14 @@
                                options="{'no_create': True}"
                                domain="[('status', '=', 'published')]"/>
                     </group>
+                    <separator string="Testimonial Profiles (e.g. Join Arlet)"/>
+                    <field name="testimonial_profile_ids" nolabel="1">
+                        <list string="Testimonial Profiles">
+                            <field name="name"/>
+                            <field name="title"/>
+                            <field name="label"/>
+                        </list>
+                    </field>
                 </sheet>
             </form>
         </field>
