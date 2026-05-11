@@ -34,6 +34,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
       AWS_REGION: ${AWS_REGION:-ap-northeast-2}
       AWS_BUCKETNAME: ${AWS_BUCKETNAME:-arlet-odoo-storage}
+      ARLET_API_KEY: ${ARLET_API_KEY:-}
     ports:
       - "${ODOO_PORT:-8069}:8069"
     volumes:
