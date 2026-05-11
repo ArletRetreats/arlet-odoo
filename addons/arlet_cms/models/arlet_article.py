@@ -76,6 +76,7 @@ class ArletContentBlock(models.Model):
     _inherit = ['arlet.translatable.mixin']
 
     article_id = fields.Many2one('arlet.article', ondelete='cascade')
+    event_article_id = fields.Many2one('arlet.event', ondelete='cascade')
     sequence = fields.Integer(default=10)
     type = fields.Selection([
         ('cover',    'Cover — full-width bg image + text'),
@@ -84,7 +85,8 @@ class ArletContentBlock(models.Model):
         ('text',     'Text — centered single column'),
         ('image',    'Image — full-width, no text'),
         ('occasion', 'Occasion — two-column list'),
-        ('profile',  'Profile — name/bio/certifications'),
+        ('profile',  'Profile — single person card'),
+        ('profiles', 'Profiles — grid of person cards'),
         ('location', 'Location — image + description'),
         ('program',  'Program — event schedule grid'),
     ], string='Block Type', required=True)
@@ -118,6 +120,13 @@ class ArletContentBlock(models.Model):
 
     # Relations
     profile_id = fields.Many2one('arlet.profile', string='Profile', help='Required for type=profile')
+    profile_ids = fields.Many2many(
+        'arlet.profile',
+        'arlet_content_block_profile_rel',
+        'block_id', 'profile_id',
+        string='Profiles',
+        help='Required for type=profiles',
+    )
     location_id = fields.Many2one('arlet.location', string='Location', help='Required for type=location')
     event_id = fields.Many2one('arlet.event', string='Event', help='Required for type=program')
     translation_ids = fields.One2many('arlet.content.block.translation', 'block_id', string='Translations')
@@ -163,6 +172,8 @@ class ArletContentBlock(models.Model):
 
         if self.profile_id:
             data['profile'] = self.profile_id.to_api_dict(locale)
+        if self.profile_ids:
+            data['profiles'] = [p.to_api_dict(locale) for p in self.profile_ids]
         if self.location_id:
             data['location'] = self.location_id.to_api_dict(locale)
         if self.event_id:

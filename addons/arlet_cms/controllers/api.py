@@ -118,6 +118,30 @@ class ArletApiController(http.Controller):
     # ------------------------------------------------------------------
     # GET /api/arlet/locations
     # ------------------------------------------------------------------
+    # GET /api/arlet/events/<slug>?locale=en
+    # ------------------------------------------------------------------
+    @http.route(
+        '/api/arlet/events/<string:slug>',
+        type='http',
+        auth='public',
+        methods=['GET'],
+        csrf=False,
+        cors=_CORS,
+    )
+    def get_event_by_slug(self, slug, locale='en', **kwargs):
+        err = self._check_api_key()
+        if err:
+            return err
+        locale = locale if locale in _VALID_LOCALES else 'en'
+        event = request.env['arlet.event'].sudo().search(
+            [('slug', '=', slug)],
+            limit=1,
+        )
+        if not event:
+            return request.make_json_response(None, status=404)
+        return request.make_json_response(event.to_detail_api_dict(locale))
+
+    # ------------------------------------------------------------------
     @http.route(
         '/api/arlet/locations',
         type='http',

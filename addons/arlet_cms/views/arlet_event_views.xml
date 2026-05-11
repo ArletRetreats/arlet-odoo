@@ -102,6 +102,8 @@
                         </group>
                         <group string="Media">
                             <field name="image" placeholder="https://..."/>
+                            <field name="hero_bg" placeholder="https://... (detail page hero background)"/>
+                            <field name="hero_bg_alt" placeholder="Alt text for hero background"/>
                         </group>
                     </group>
                     <notebook>
@@ -128,6 +130,17 @@
                                     <field name="sequence" widget="handle"/>
                                     <field name="date_label"/>
                                     <field name="theme"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Content Blocks">
+                            <field name="content_ids">
+                                <list string="Content Blocks">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="type"/>
+                                    <field name="title"/>
+                                    <field name="label"/>
+                                    <field name="bg"/>
                                 </list>
                             </field>
                         </page>

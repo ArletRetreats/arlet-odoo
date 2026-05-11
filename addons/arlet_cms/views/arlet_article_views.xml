@@ -14,8 +14,10 @@
                         <field name="label"/>
                         <field name="subtitle"/>
                     </group>
-                    <group string="Body">
-                        <field name="html" widget="html" nolabel="1"/>
+                    <separator string="HTML Body"/>
+                    <field name="html" widget="html" nolabel="1"/>
+                    <separator string="Text Fields"/>
+                    <group>
                         <field name="paragraphs" placeholder="One paragraph per line (used if HTML empty)"/>
                         <field name="footer"     placeholder="One footer line per line"/>
                         <field name="left_items"  placeholder="One item per line (type=occasion)"/>
@@ -77,6 +79,14 @@
                                 <field name="location_id"/>
                                 <field name="event_id"/>
                             </group>
+                            <separator string="Profiles (type=profiles)"/>
+                            <field name="profile_ids">
+                                <list string="Profiles">
+                                    <field name="name"/>
+                                    <field name="title"/>
+                                    <field name="label"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>

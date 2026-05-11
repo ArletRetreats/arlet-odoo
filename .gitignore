@@ -10,3 +10,6 @@ postgres_data/
 # Logs
 *.log
 data/
+
+# Local scripts
+scripts/

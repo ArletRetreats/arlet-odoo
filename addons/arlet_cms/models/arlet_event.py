@@ -24,10 +24,14 @@ class ArletEvent(models.Model):
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date', required=True)
     program_ids = fields.One2many('arlet.event.program.day', 'event_id', string='Program')
+    # Detail page
+    hero_bg = fields.Char(string='Hero BG Image URL')
+    hero_bg_alt = fields.Char(string='Hero BG Alt')
+    content_ids = fields.One2many('arlet.content.block', 'event_article_id', string='Content Blocks')
     translation_ids = fields.One2many('arlet.event.translation', 'event_id', string='Translations')
 
-    def to_api_dict(self, locale='en'):
-        data = {
+    def _base_dict(self, locale='en'):
+        return {
             'id': str(self.id),
             'category': self.category.capitalize() if self.category else '',
             'title': self._t('title', locale),
@@ -39,8 +43,22 @@ class ArletEvent(models.Model):
             'slug': self.slug or '',
             'comingSoon': self.coming_soon,
         }
+
+    def to_api_dict(self, locale='en'):
+        data = self._base_dict(locale)
         if self.program_ids:
             data['program'] = [day.to_api_dict(locale) for day in self.program_ids]
+        return data
+
+    def to_detail_api_dict(self, locale='en'):
+        data = self._base_dict(locale)
+        if self.program_ids:
+            data['program'] = [day.to_api_dict(locale) for day in self.program_ids]
+        data.update({
+            'heroBg': self.hero_bg or '',
+            'heroBgAlt': self.hero_bg_alt or '',
+            'content': [block.to_api_dict(locale) for block in self.content_ids],
+        })
         return data
 
 
