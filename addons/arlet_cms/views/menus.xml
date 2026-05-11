@@ -29,6 +29,12 @@
               action="arlet_profile_action"
               sequence="40"/>
 
+    <menuitem id="menu_arlet_page_configs"
+              name="Page Configurations"
+              parent="menu_arlet_cms_root"
+              action="arlet_page_config_action"
+              sequence="50"/>
+
     <menuitem id="menu_arlet_configuration"
               name="Configuration"
               parent="menu_arlet_cms_root"

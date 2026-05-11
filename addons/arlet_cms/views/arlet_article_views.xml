@@ -41,27 +41,42 @@
                             <field name="sequence"/>
                             <field name="bg"/>
                             <field name="text_color"/>
-                            <field name="image_position"/>
+                            <field name="image_position" invisible="type not in ('split', 'half', 'testimonial')"/>
                         </group>
-                        <group string="Media">
-                            <field name="bg_image" placeholder="https://... (type=cover)"/>
-                            <field name="image"    placeholder="https://... (type=split)"/>
-                            <field name="image_alt"/>
+                        <group string="Media" invisible="type not in ('cover', 'split', 'testimonial', 'image')">
+                            <field name="bg_image" placeholder="https://... (full-width background)" invisible="type != 'cover'"/>
+                            <field name="image"    placeholder="https://..." invisible="type not in ('split', 'testimonial', 'image')"/>
+                            <field name="image_alt" invisible="type not in ('split', 'testimonial', 'image')"/>
                         </group>
                     </group>
+
+                    <!-- Relation selectors — shown contextually per block type -->
+                    <group string="Profile" invisible="type not in ('profile', 'testimonial')">
+                        <field name="profile_id" options="{'no_create': True}"/>
+                    </group>
+                    <group string="Profiles" invisible="type != 'profiles'">
+                        <field name="profile_ids" nolabel="1" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                    <group string="Location" invisible="type != 'location'">
+                        <field name="location_id" options="{'no_create': True}"/>
+                    </group>
+                    <group string="Event (Program)" invisible="type != 'program'">
+                        <field name="event_id" options="{'no_create': True}"/>
+                    </group>
+
                     <notebook>
-                        <page string="Content (EN)">
+                        <page string="Content (EN)" invisible="type in ('image', 'profile', 'location', 'program')">
                             <group>
                                 <field name="title"/>
-                                <field name="label"/>
+                                <field name="label"    invisible="type in ('testimonial', 'profiles', 'occasion')"/>
                                 <field name="subtitle"/>
                             </group>
-                            <field name="html" widget="html"/>
+                            <field name="html" widget="html" invisible="type in ('occasion', 'profiles', 'testimonial')"/>
                             <group>
-                                <field name="paragraphs"  placeholder="One paragraph per line"/>
-                                <field name="footer"      placeholder="One footer line per line"/>
-                                <field name="left_items"  placeholder="One item per line (type=occasion)"/>
-                                <field name="right_items" placeholder="One item per line (type=occasion)"/>
+                                <field name="paragraphs"  placeholder="One paragraph per line (used if HTML empty)" invisible="type in ('occasion', 'profiles')"/>
+                                <field name="footer"      placeholder="One footer line per line"                     invisible="type == 'profiles'"/>
+                                <field name="left_items"  placeholder="Left column — one item per line"             invisible="type != 'occasion'"/>
+                                <field name="right_items" placeholder="Right column — one item per line"            invisible="type != 'occasion'"/>
                             </group>
                         </page>
                         <page string="Translations">
@@ -70,21 +85,6 @@
                                     <field name="locale"/>
                                     <field name="title"/>
                                     <field name="subtitle"/>
-                                </list>
-                            </field>
-                        </page>
-                        <page string="Relations">
-                            <group>
-                                <field name="profile_id"/>
-                                <field name="location_id"/>
-                                <field name="event_id"/>
-                            </group>
-                            <separator string="Profiles (type=profiles)"/>
-                            <field name="profile_ids">
-                                <list string="Profiles">
-                                    <field name="name"/>
-                                    <field name="title"/>
-                                    <field name="label"/>
                                 </list>
                             </field>
                         </page>
@@ -119,12 +119,17 @@
                             <field name="name"/>
                             <field name="title"/>
                             <field name="label"/>
+                            <field name="slug" readonly="1"/>
                         </group>
                         <group string="Media">
                             <field name="image"         placeholder="https://..."/>
                             <field name="image_alt"/>
                             <field name="image_caption"/>
                         </group>
+                    </group>
+                    <group string="Host Page Hero" col="2">
+                        <field name="hero_bg"     placeholder="https://... — hero background for /events/host/&lt;slug&gt;. Falls back to Photo URL when empty."/>
+                        <field name="hero_bg_alt" placeholder="Alt text for hero background"/>
                     </group>
                     <notebook>
                         <page string="Content (EN)">
@@ -181,6 +186,10 @@
         <field name="model">arlet.article</field>
         <field name="arch" type="xml">
             <form string="Article">
+                <header>
+                    <button name="action_preview" string="Preview on Web" type="object"
+                            class="btn-primary" invisible="not slug"/>
+                </header>
                 <sheet>
                     <group>
                         <group string="General">
@@ -189,7 +198,7 @@
                             <field name="published_at"/>
                             <field name="author"/>
                             <field name="location"/>
-                            <field name="slug" placeholder="leave empty for drafts"/>
+                            <field name="slug" readonly="1"/>
                         </group>
                         <group string="Cover Image">
                             <field name="image"      placeholder="https://..."/>

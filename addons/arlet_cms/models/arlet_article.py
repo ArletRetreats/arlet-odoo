@@ -1,5 +1,5 @@
-from odoo import models, fields
-from .utils import split_lines
+from odoo import models, fields, api
+from .utils import split_lines, slugify, WEB_BASE
 
 
 class ArletProfile(models.Model):
@@ -18,11 +18,33 @@ class ArletProfile(models.Model):
     image = fields.Char(string='Photo URL')
     image_alt = fields.Char(string='Photo Alt')
     image_caption = fields.Char(string='Photo Caption')
+    hero_bg = fields.Char(
+        string='Host Page Hero BG URL',
+        help='Full-width background image shown at the top of this host\'s events page (e.g. /events/host/<slug>). '
+             'Falls back to the profile photo when not set.',
+    )
+    hero_bg_alt = fields.Char(string='Host Page Hero BG Alt')
+    slug = fields.Char(
+        string='Slug',
+        compute='_compute_slug', store=True, readonly=True,
+        help='Auto-generated from the Internal Name.',
+    )
     link_ids = fields.One2many('arlet.profile.link', 'profile_id', string='Links')
     translation_ids = fields.One2many('arlet.profile.translation', 'profile_id', string='Translations')
 
+    _sql_constraints = [(
+        'slug_unique', 'UNIQUE(slug)',
+        'A profile with this slug already exists.',
+    )]
+
+    @api.depends('name')
+    def _compute_slug(self):
+        for rec in self:
+            rec.slug = slugify(rec.name or '')
+
     def to_api_dict(self, locale='en'):
         return {
+            'slug': self.slug or '',
             'title': self.title or '',
             'label': self.label or '',
             'html': self._t('html', locale),
@@ -31,6 +53,8 @@ class ArletProfile(models.Model):
             'image': self.image or '',
             'imageAlt': self.image_alt or '',
             'imageCaption': self.image_caption or '',
+            'heroBg': self.hero_bg or '',
+            'heroBgAlt': self.hero_bg_alt or '',
             'links': [link.to_api_dict() for link in self.link_ids],
         }
 
@@ -87,6 +111,7 @@ class ArletContentBlock(models.Model):
         ('occasion', 'Occasion — two-column list'),
         ('profile',  'Profile — single person card'),
         ('profiles', 'Profiles — grid of person cards'),
+        ('testimonial', 'Testimonial — quote with optional image'),
         ('location', 'Location — image + description'),
         ('program',  'Program — event schedule grid'),
     ], string='Block Type', required=True)
@@ -172,6 +197,17 @@ class ArletContentBlock(models.Model):
 
         if self.profile_id:
             data['profile'] = self.profile_id.to_api_dict(locale)
+            # For testimonial blocks, auto-fill display fields from the linked profile
+            # when the raw text fields have not been overridden manually.
+            if self.type == 'testimonial':
+                if not data.get('title'):
+                    data['title'] = self.profile_id.title or ''
+                if not data.get('subtitle'):
+                    data['subtitle'] = self.profile_id.label or ''
+                if not data.get('image'):
+                    data['image'] = self.profile_id.image or ''
+                if not data.get('imageAlt'):
+                    data['imageAlt'] = self.profile_id.image_alt or ''
         if self.profile_ids:
             data['profiles'] = [p.to_api_dict(locale) for p in self.profile_ids]
         if self.location_id:
@@ -220,8 +256,11 @@ class ArletArticle(models.Model):
     author = fields.Char()
     location = fields.Char()
     image = fields.Char(string='Cover Image URL', required=True)
-    slug = fields.Char(string='Slug', default='',
-                       help='Leave empty for drafts with no page yet.')
+    slug = fields.Char(
+        string='Slug',
+        compute='_compute_slug', store=True, readonly=True,
+        help='Auto-generated from the Internal Name.',
+    )
     status = fields.Selection(
         [('published', 'Published'), ('draft', 'Draft')],
         required=True,
@@ -232,6 +271,16 @@ class ArletArticle(models.Model):
     hero_bg_alt = fields.Char(string='Hero BG Alt')
     content_ids = fields.One2many('arlet.content.block', 'article_id', string='Content Blocks')
     translation_ids = fields.One2many('arlet.article.translation', 'article_id', string='Translations')
+
+    _sql_constraints = [(
+        'slug_unique', 'UNIQUE(slug)',
+        'An article with this slug already exists.',
+    )]
+
+    @api.depends('name')
+    def _compute_slug(self):
+        for rec in self:
+            rec.slug = slugify(rec.name or '')
 
     def _base_dict(self, locale='en'):
         return {
@@ -260,6 +309,23 @@ class ArletArticle(models.Model):
             'content': [block.to_api_dict(locale) for block in self.content_ids],
         })
         return data
+
+    def action_preview(self):
+        self.ensure_one()
+        if not self.slug:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': 'Set a slug first to enable preview.',
+                    'type': 'warning',
+                },
+            }
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'{WEB_BASE}/en/staff/preview/article/{self.slug}',
+            'target': 'new',
+        }
 
 
 class ArletArticleTranslation(models.Model):

@@ -90,6 +90,10 @@
         <field name="model">arlet.event</field>
         <field name="arch" type="xml">
             <form string="Event">
+                <header>
+                    <button name="action_preview" string="Preview on Web" type="object"
+                            class="btn-primary" invisible="not slug"/>
+                </header>
                 <sheet>
                     <group>
                         <group string="General">
@@ -97,8 +101,9 @@
                             <field name="category"/>
                             <field name="start_date"/>
                             <field name="end_date"/>
-                            <field name="slug" placeholder="leave empty if no detail page"/>
+                            <field name="slug" readonly="1"/>
                             <field name="coming_soon"/>
+                            <field name="owner_id" placeholder="Brand / person who co-hosts this event"/>
                         </group>
                         <group string="Media">
                             <field name="image" placeholder="https://..."/>

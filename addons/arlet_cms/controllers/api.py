@@ -30,6 +30,29 @@ class ArletApiController(http.Controller):
         return None
 
     # ------------------------------------------------------------------
+    # GET /api/arlet/page-config/<page_key>?locale=en
+    # ------------------------------------------------------------------
+    @http.route(
+        '/api/arlet/page-config/<string:page_key>',
+        type='http',
+        auth='public',
+        methods=['GET'],
+        csrf=False,
+        cors=_CORS,
+    )
+    def get_page_config(self, page_key, locale='en', **kwargs):
+        err = self._check_api_key()
+        if err:
+            return err
+        locale = locale if locale in _VALID_LOCALES else 'en'
+        config = request.env['arlet.page.config'].sudo().search(
+            [('page_key', '=', page_key)], limit=1,
+        )
+        if not config:
+            return request.make_json_response({'pageKey': page_key})
+        return request.make_json_response(config.to_api_dict(locale))
+
+    # ------------------------------------------------------------------
     # GET /api/arlet/events?locale=en
     # ------------------------------------------------------------------
     @http.route(
@@ -40,12 +63,15 @@ class ArletApiController(http.Controller):
         csrf=False,
         cors=_CORS,
     )
-    def list_events(self, locale='en', **kwargs):
+    def list_events(self, locale='en', owner_slug='', **kwargs):
         err = self._check_api_key()
         if err:
             return err
         locale = locale if locale in _VALID_LOCALES else 'en'
-        events = request.env['arlet.event'].sudo().search([])
+        domain = []
+        if owner_slug:
+            domain = [('owner_id.slug', '=', owner_slug)]
+        events = request.env['arlet.event'].sudo().search(domain)
         data = [event.to_api_dict(locale) for event in events]
         return request.make_json_response(data)
 
@@ -87,6 +113,30 @@ class ArletApiController(http.Controller):
         locale = locale if locale in _VALID_LOCALES else 'en'
         article = request.env['arlet.article'].sudo().search(
             [('slug', '=', slug), ('status', '=', 'published')],
+            limit=1,
+        )
+        if not article:
+            return request.make_json_response(None, status=404)
+        return request.make_json_response(article.to_detail_api_dict(locale))
+
+    # ------------------------------------------------------------------
+    # GET /api/arlet/articles/preview/<slug>?locale=en  (draft allowed)
+    # ------------------------------------------------------------------
+    @http.route(
+        '/api/arlet/articles/preview/<string:slug>',
+        type='http',
+        auth='public',
+        methods=['GET'],
+        csrf=False,
+        cors=_CORS,
+    )
+    def get_article_preview(self, slug, locale='en', **kwargs):
+        err = self._check_api_key()
+        if err:
+            return err
+        locale = locale if locale in _VALID_LOCALES else 'en'
+        article = request.env['arlet.article'].sudo().search(
+            [('slug', '=', slug)],
             limit=1,
         )
         if not article:

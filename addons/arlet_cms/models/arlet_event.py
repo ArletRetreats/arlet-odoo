@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from .utils import slugify, WEB_BASE
 
 
 class ArletEvent(models.Model):
@@ -19,19 +20,40 @@ class ArletEvent(models.Model):
     location = fields.Char(string='Location')
     description = fields.Text(string='Description')
     image = fields.Char(string='Image URL')
-    slug = fields.Char(string='Slug', default='')
+    slug = fields.Char(
+        string='Slug',
+        compute='_compute_slug', store=True, readonly=True,
+        help='Auto-generated from the Internal Name.',
+    )
     coming_soon = fields.Boolean(string='Coming Soon', default=False)
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date', required=True)
     program_ids = fields.One2many('arlet.event.program.day', 'event_id', string='Program')
+    # Event owner / host (e.g. a partner brand)
+    owner_id = fields.Many2one(
+        'arlet.profile',
+        string='Event Owner / Host',
+        ondelete='set null',
+        help='The person or brand that commissioned / co-hosts this event. Enables the "See X\'s events" CTA.',
+    )
     # Detail page
     hero_bg = fields.Char(string='Hero BG Image URL')
     hero_bg_alt = fields.Char(string='Hero BG Alt')
     content_ids = fields.One2many('arlet.content.block', 'event_article_id', string='Content Blocks')
     translation_ids = fields.One2many('arlet.event.translation', 'event_id', string='Translations')
 
+    _sql_constraints = [(
+        'slug_unique', 'UNIQUE(slug)',
+        'An event with this slug already exists.',
+    )]
+
+    @api.depends('name')
+    def _compute_slug(self):
+        for rec in self:
+            rec.slug = slugify(rec.name or '')
+
     def _base_dict(self, locale='en'):
-        return {
+        data = {
             'id': str(self.id),
             'category': self.category.capitalize() if self.category else '',
             'title': self._t('title', locale),
@@ -43,6 +65,14 @@ class ArletEvent(models.Model):
             'slug': self.slug or '',
             'comingSoon': self.coming_soon,
         }
+        if self.owner_id:
+            data['owner'] = {
+                'slug': self.owner_id.slug or '',
+                'title': self.owner_id.title or '',
+                'label': self.owner_id.label or '',
+                'image': self.owner_id.image or '',
+            }
+        return data
 
     def to_api_dict(self, locale='en'):
         data = self._base_dict(locale)
@@ -60,6 +90,23 @@ class ArletEvent(models.Model):
             'content': [block.to_api_dict(locale) for block in self.content_ids],
         })
         return data
+
+    def action_preview(self):
+        self.ensure_one()
+        if not self.slug:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': 'Set a slug first to enable preview.',
+                    'type': 'warning',
+                },
+            }
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'{WEB_BASE}/en/staff/preview/event/{self.slug}',
+            'target': 'new',
+        }
 
 
 class ArletEventTranslation(models.Model):

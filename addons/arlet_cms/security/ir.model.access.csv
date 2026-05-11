@@ -27,6 +27,8 @@ access_arlet_profile_translation_public,arlet.profile.translation public,model_a
 access_arlet_profile_translation_user,arlet.profile.translation user,model_arlet_profile_translation,base.group_user,1,1,1,1
 access_arlet_profile_link_public,arlet.profile.link public,model_arlet_profile_link,,1,0,0,0
 access_arlet_profile_link_user,arlet.profile.link user,model_arlet_profile_link,base.group_user,1,1,1,1
+access_arlet_page_config_public,arlet.page.config public,model_arlet_page_config,,1,0,0,0
+access_arlet_page_config_user,arlet.page.config user,model_arlet_page_config,base.group_user,1,1,1,1
 access_arlet_location_public,arlet.location public,model_arlet_location,,1,0,0,0
 access_arlet_location_user,arlet.location user,model_arlet_location,base.group_user,1,1,1,1
 access_arlet_location_translation_public,arlet.location.translation public,model_arlet_location_translation,,1,0,0,0

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Page Config list ──────────────────────────────────────────── -->
+    <record id="arlet_page_config_list_view" model="ir.ui.view">
+        <field name="name">arlet.page.config.list</field>
+        <field name="model">arlet.page.config</field>
+        <field name="arch" type="xml">
+            <list string="Page Configurations">
+                <field name="page_key"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Page Config form ──────────────────────────────────────────── -->
+    <record id="arlet_page_config_form_view" model="ir.ui.view">
+        <field name="name">arlet.page.config.form</field>
+        <field name="model">arlet.page.config</field>
+        <field name="arch" type="xml">
+            <form string="Page Configuration">
+                <sheet>
+                    <group>
+                        <field name="page_key"/>
+                        <field name="featured_article_id"
+                               options="{'no_create': True}"
+                               domain="[('status', '=', 'published')]"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Action ────────────────────────────────────────────────────── -->
+    <record id="arlet_page_config_action" model="ir.actions.act_window">
+        <field name="name">Page Configurations</field>
+        <field name="res_model">arlet.page.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
