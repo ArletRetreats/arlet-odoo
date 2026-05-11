@@ -33,6 +33,14 @@
                             <field name="label"/>
                         </list>
                     </field>
+                    <separator string="Featured Events (e.g. Join the Arlet Experience)"/>
+                    <field name="featured_event_ids" nolabel="1">
+                        <list string="Featured Events">
+                            <field name="name"/>
+                            <field name="start_date"/>
+                            <field name="location"/>
+                        </list>
+                    </field>
                 </sheet>
             </form>
         </field>

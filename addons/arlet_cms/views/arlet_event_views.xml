@@ -106,8 +106,8 @@
                             <field name="owner_id" placeholder="Brand / person who co-hosts this event"/>
                         </group>
                         <group string="Media">
-                            <field name="image" placeholder="https://..."/>
-                            <field name="hero_bg" placeholder="https://... (detail page hero background)"/>
+                            <field name="image" widget="image" options="{'size': [128, 128]}"/>
+                            <field name="hero_bg" widget="image" options="{'size': [128, 128]}"/>
                             <field name="hero_bg_alt" placeholder="Alt text for hero background"/>
                         </group>
                     </group>

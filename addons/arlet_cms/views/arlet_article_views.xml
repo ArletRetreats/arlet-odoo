@@ -44,8 +44,8 @@
                             <field name="image_position" invisible="type not in ('split', 'half', 'testimonial')"/>
                         </group>
                         <group string="Media" invisible="type not in ('cover', 'split', 'testimonial', 'image')">
-                            <field name="bg_image" placeholder="https://... (full-width background)" invisible="type != 'cover'"/>
-                            <field name="image"    placeholder="https://..." invisible="type not in ('split', 'testimonial', 'image')"/>
+                            <field name="bg_image" widget="image" options="{'size': [128, 128]}" invisible="type != 'cover'"/>
+                            <field name="image"    widget="image" options="{'size': [128, 128]}" invisible="type not in ('split', 'testimonial', 'image')"/>
                             <field name="image_alt" invisible="type not in ('split', 'testimonial', 'image')"/>
                         </group>
                     </group>
@@ -122,13 +122,13 @@
                             <field name="slug" readonly="1"/>
                         </group>
                         <group string="Media">
-                            <field name="image"         placeholder="https://..."/>
+                            <field name="image" widget="image" options="{'size': [128, 128]}"/>
                             <field name="image_alt"/>
                             <field name="image_caption"/>
                         </group>
                     </group>
                     <group string="Host Page Hero" col="2">
-                        <field name="hero_bg"     placeholder="https://... — hero background for /events/host/&lt;slug&gt;. Falls back to Photo URL when empty."/>
+                        <field name="hero_bg" widget="image" options="{'size': [128, 128]}" help="Hero background for /events/host/&lt;slug&gt;. Falls back to Photo when empty."/>
                         <field name="hero_bg_alt" placeholder="Alt text for hero background"/>
                     </group>
                     <notebook>
@@ -201,8 +201,8 @@
                             <field name="slug" readonly="1"/>
                         </group>
                         <group string="Cover Image">
-                            <field name="image"      placeholder="https://..."/>
-                            <field name="hero_bg"    placeholder="https://... (detail page hero)"/>
+                            <field name="image"   widget="image" options="{'size': [128, 128]}"/>
+                            <field name="hero_bg" widget="image" options="{'size': [128, 128]}" help="Detail page hero background"/>
                             <field name="hero_bg_alt"/>
                         </group>
                     </group>

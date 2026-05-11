@@ -19,7 +19,7 @@ class ArletEvent(models.Model):
     title = fields.Char(string='Title', required=True)
     location = fields.Char(string='Location')
     description = fields.Text(string='Description')
-    image = fields.Char(string='Image URL')
+    image = fields.Image(string='Image', max_width=0, max_height=0)
     slug = fields.Char(
         string='Slug',
         compute='_compute_slug', store=True, readonly=True,
@@ -37,7 +37,7 @@ class ArletEvent(models.Model):
         help='The person or brand that commissioned / co-hosts this event. Enables the "See X\'s events" CTA.',
     )
     # Detail page
-    hero_bg = fields.Char(string='Hero BG Image URL')
+    hero_bg = fields.Image(string='Hero BG', max_width=0, max_height=0)
     hero_bg_alt = fields.Char(string='Hero BG Alt')
     content_ids = fields.One2many('arlet.content.block', 'event_article_id', string='Content Blocks')
     translation_ids = fields.One2many('arlet.event.translation', 'event_id', string='Translations')
@@ -61,7 +61,7 @@ class ArletEvent(models.Model):
             'endDate': self.end_date.isoformat() if self.end_date else '',
             'location': self._t('location', locale),
             'description': self._t('description', locale),
-            'image': self.image or '',
+            'image': self._img_url('image'),
             'slug': self.slug or '',
             'comingSoon': self.coming_soon,
         }
@@ -70,8 +70,8 @@ class ArletEvent(models.Model):
                 'slug': self.owner_id.slug or '',
                 'title': self.owner_id.title or '',
                 'label': self.owner_id.label or '',
-                'image': self.owner_id.image or '',
-                'heroBg': self.owner_id.hero_bg or '',
+                'image': self.owner_id._img_url('image'),
+                'heroBg': self.owner_id._img_url('hero_bg'),
                 'heroBgAlt': self.owner_id.hero_bg_alt or '',
             }
         return data
@@ -87,7 +87,7 @@ class ArletEvent(models.Model):
         if self.program_ids:
             data['program'] = [day.to_api_dict(locale) for day in self.program_ids]
         data.update({
-            'heroBg': self.hero_bg or '',
+            'heroBg': self._img_url('hero_bg'),
             'heroBgAlt': self.hero_bg_alt or '',
             'content': [block.to_api_dict(locale) for block in self.content_ids],
         })

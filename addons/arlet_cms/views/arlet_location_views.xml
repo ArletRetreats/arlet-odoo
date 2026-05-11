@@ -25,7 +25,7 @@
                         <group string="General">
                             <field name="name"/>
                             <field name="country" placeholder="BE"/>
-                            <field name="image" placeholder="https://..."/>
+                            <field name="image" widget="image" options="{'size': [128, 128]}"/>
                             <field name="image_alt"/>
                             <field name="image_position"/>
                         </group>

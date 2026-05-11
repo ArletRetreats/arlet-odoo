@@ -12,7 +12,7 @@ class ArletLocation(models.Model):
     # EN base values
     subtitle = fields.Char(string='Subtitle')
     html = fields.Html(string='Description')
-    image = fields.Char(string='Image URL')
+    image = fields.Image(string='Image', max_width=0, max_height=0)
     image_alt = fields.Char(string='Image Alt')
     image_position = fields.Selection(
         [('left', 'Left'), ('right', 'Right')],
@@ -29,7 +29,7 @@ class ArletLocation(models.Model):
             'country': self.country or '',
             'subtitle': self._t('subtitle', locale),
             'html': self._t('html', locale),
-            'image': self.image or '',
+            'image': self._img_url('image'),
             'imageAlt': self.image_alt or '',
             'imagePosition': self.image_position or 'right',
         }

@@ -15,11 +15,12 @@ class ArletProfile(models.Model):
     html = fields.Html(string='Bio')
     list_label = fields.Char(string='Certifications Label')
     list_items = fields.Text(string='Certifications — one per line')
-    image = fields.Char(string='Photo URL')
+    image = fields.Image(string='Photo', max_width=0, max_height=0)
     image_alt = fields.Char(string='Photo Alt')
     image_caption = fields.Char(string='Photo Caption')
-    hero_bg = fields.Char(
-        string='Host Page Hero BG URL',
+    hero_bg = fields.Image(
+        string='Host Page Hero BG',
+        max_width=0, max_height=0,
         help='Full-width background image shown at the top of this host\'s events page (e.g. /events/host/<slug>). '
              'Falls back to the profile photo when not set.',
     )
@@ -50,10 +51,10 @@ class ArletProfile(models.Model):
             'html': self._t('html', locale),
             'listLabel': self._t('list_label', locale),
             'listItems': split_lines(self._t('list_items', locale)),
-            'image': self.image or '',
+            'image': self._img_url('image'),
             'imageAlt': self.image_alt or '',
             'imageCaption': self.image_caption or '',
-            'heroBg': self.hero_bg or '',
+            'heroBg': self._img_url('hero_bg'),
             'heroBgAlt': self.hero_bg_alt or '',
             'links': [link.to_api_dict() for link in self.link_ids],
         }
@@ -117,8 +118,8 @@ class ArletContentBlock(models.Model):
     ], string='Block Type', required=True)
 
     # Image / background
-    bg_image = fields.Char(string='BG Image URL', help='Used for type=cover')
-    image = fields.Char(string='Image URL', help='Used for type=split')
+    bg_image = fields.Image(string='BG Image', max_width=0, max_height=0, help='Used for type=cover')
+    image = fields.Image(string='Image', max_width=0, max_height=0, help='Used for type=split')
     image_alt = fields.Char(string='Image Alt')
     image_position = fields.Selection(
         [('left', 'Left'), ('right', 'Right')], string='Image Position',
@@ -160,12 +161,16 @@ class ArletContentBlock(models.Model):
         data = {'type': self.type}
 
         for attr, key in [
-            ('bg_image', 'bgImage'), ('image', 'image'), ('image_alt', 'imageAlt'),
+            ('image_alt', 'imageAlt'),
             ('image_position', 'imagePosition'), ('bg', 'bg'), ('text_color', 'textColor'),
         ]:
             val = getattr(self, attr, None)
             if val:
                 data[key] = val
+        for attr, key in [('bg_image', 'bgImage'), ('image', 'image')]:
+            url = self._img_url(attr)
+            if url:
+                data[key] = url
 
         for field_name, key in [
             ('title', 'title'), ('label', 'label'), ('subtitle', 'subtitle'),
@@ -205,7 +210,7 @@ class ArletContentBlock(models.Model):
                 if not data.get('subtitle'):
                     data['subtitle'] = self.profile_id.label or ''
                 if not data.get('image'):
-                    data['image'] = self.profile_id.image or ''
+                    data['image'] = self.profile_id._img_url('image')
                 if not data.get('imageAlt'):
                     data['imageAlt'] = self.profile_id.image_alt or ''
         if self.profile_ids:
@@ -255,7 +260,7 @@ class ArletArticle(models.Model):
     published_at = fields.Date(string='Published At', required=True)
     author = fields.Char()
     location = fields.Char()
-    image = fields.Char(string='Cover Image URL', required=True)
+    image = fields.Image(string='Cover Image', max_width=0, max_height=0, required=True)
     slug = fields.Char(
         string='Slug',
         compute='_compute_slug', store=True, readonly=True,
@@ -267,7 +272,7 @@ class ArletArticle(models.Model):
         default='draft',
     )
     # Detail page
-    hero_bg = fields.Char(string='Hero BG Image URL')
+    hero_bg = fields.Image(string='Hero BG', max_width=0, max_height=0)
     hero_bg_alt = fields.Char(string='Hero BG Alt')
     content_ids = fields.One2many('arlet.content.block', 'article_id', string='Content Blocks')
     translation_ids = fields.One2many('arlet.article.translation', 'article_id', string='Translations')
@@ -292,7 +297,7 @@ class ArletArticle(models.Model):
             'author': self.author or '',
             'location': self.location or '',
             'description': self._t('description', locale),
-            'image': self.image or '',
+            'image': self._img_url('image'),
             'slug': self.slug or '',
             'status': self.status,
         }
@@ -303,7 +308,7 @@ class ArletArticle(models.Model):
     def to_detail_api_dict(self, locale='en'):
         data = self._base_dict(locale)
         data.update({
-            'heroBg': self.hero_bg or '',
+            'heroBg': self._img_url('hero_bg'),
             'heroBgAlt': self.hero_bg_alt or '',
             'intro': split_lines(self._t('intro', locale)),
             'content': [block.to_api_dict(locale) for block in self.content_ids],

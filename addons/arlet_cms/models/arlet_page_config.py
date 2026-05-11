@@ -41,6 +41,15 @@ class ArletPageConfig(models.Model):
         help='Profiles shown as testimonials on this page (displayed in order).',
     )
 
+    # ── Featured events (e.g. Join Arlet → experience section) ─────────────
+    featured_event_ids = fields.Many2many(
+        'arlet.event',
+        'arlet_page_config_event_rel',
+        'config_id', 'event_id',
+        string='Featured Events',
+        help='Events shown as cards on this page (e.g. Join the Arlet Experience section).',
+    )
+
     _sql_constraints = [(
         'page_key_unique', 'UNIQUE(page_key)',
         'A configuration record for this page already exists.',
@@ -52,4 +61,6 @@ class ArletPageConfig(models.Model):
             data['featuredArticle'] = self.featured_article_id.to_list_api_dict(locale)
         if self.testimonial_profile_ids:
             data['testimonialProfiles'] = [p.to_api_dict(locale) for p in self.testimonial_profile_ids]
+        if self.featured_event_ids:
+            data['featuredEvents'] = [e._base_dict(locale) for e in self.featured_event_ids]
         return data
