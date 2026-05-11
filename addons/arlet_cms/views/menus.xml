@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_arlet_cms_root"
+              name="Arlet CMS"
+              sequence="10"/>
+
+    <menuitem id="menu_arlet_events"
+              name="Events"
+              parent="menu_arlet_cms_root"
+              action="arlet_event_action"
+              sequence="10"/>
+
+    <menuitem id="menu_arlet_articles"
+              name="Articles"
+              parent="menu_arlet_cms_root"
+              action="arlet_article_action"
+              sequence="20"/>
+
+    <menuitem id="menu_arlet_locations"
+              name="Locations"
+              parent="menu_arlet_cms_root"
+              action="arlet_location_action"
+              sequence="30"/>
+
+    <menuitem id="menu_arlet_profiles"
+              name="Profiles"
+              parent="menu_arlet_cms_root"
+              action="arlet_profile_action"
+              sequence="40"/>
+
+</odoo>

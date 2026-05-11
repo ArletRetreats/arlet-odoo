@@ -1,0 +1,269 @@
+from odoo import models, fields
+from .utils import split_lines
+
+
+class ArletProfile(models.Model):
+    _name = 'arlet.profile'
+    _description = 'Arlet Profile'
+    _rec_name = 'title'
+    _inherit = ['arlet.translatable.mixin']
+
+    name = fields.Char(string='Internal Name', required=True)
+    title = fields.Char(string='Full Name', required=True)
+    label = fields.Char(string='Role / Title')
+    # EN base values
+    html = fields.Html(string='Bio')
+    list_label = fields.Char(string='Certifications Label')
+    list_items = fields.Text(string='Certifications — one per line')
+    image = fields.Char(string='Photo URL')
+    image_alt = fields.Char(string='Photo Alt')
+    image_caption = fields.Char(string='Photo Caption')
+    link_ids = fields.One2many('arlet.profile.link', 'profile_id', string='Links')
+    translation_ids = fields.One2many('arlet.profile.translation', 'profile_id', string='Translations')
+
+    def to_api_dict(self, locale='en'):
+        return {
+            'title': self.title or '',
+            'label': self.label or '',
+            'html': self._t('html', locale),
+            'listLabel': self._t('list_label', locale),
+            'listItems': split_lines(self._t('list_items', locale)),
+            'image': self.image or '',
+            'imageAlt': self.image_alt or '',
+            'imageCaption': self.image_caption or '',
+            'links': [link.to_api_dict() for link in self.link_ids],
+        }
+
+
+class ArletProfileTranslation(models.Model):
+    _name = 'arlet.profile.translation'
+    _description = 'Profile Translation'
+    _inherit = ['arlet.base.translation']
+
+    profile_id = fields.Many2one('arlet.profile', required=True, ondelete='cascade')
+    html = fields.Html(string='Bio')
+    list_label = fields.Char(string='Certifications Label')
+    list_items = fields.Text(string='Certifications — one per line')
+
+    _sql_constraints = [(
+        'locale_profile_unique', 'UNIQUE(profile_id, locale)',
+        'A translation for this locale already exists for this profile.',
+    )]
+
+
+class ArletProfileLink(models.Model):
+    _name = 'arlet.profile.link'
+    _description = 'Profile Link'
+    _order = 'sequence asc'
+
+    profile_id = fields.Many2one('arlet.profile', required=True, ondelete='cascade')
+    sequence = fields.Integer(default=10)
+    label = fields.Char(required=True, help='e.g. "Instagram"')
+    value = fields.Char(required=True, help='e.g. "@aminluc"')
+    href = fields.Char(help='URL. Leave empty to render value as plain text.')
+
+    def to_api_dict(self):
+        data = {'label': self.label or '', 'value': self.value or ''}
+        if self.href:
+            data['href'] = self.href
+        return data
+
+
+class ArletContentBlock(models.Model):
+    _name = 'arlet.content.block'
+    _description = 'Article Content Block'
+    _order = 'sequence asc'
+    _inherit = ['arlet.translatable.mixin']
+
+    article_id = fields.Many2one('arlet.article', ondelete='cascade')
+    sequence = fields.Integer(default=10)
+    type = fields.Selection([
+        ('cover',    'Cover — full-width bg image + text'),
+        ('split',    'Split — image + text side by side'),
+        ('half',     'Half — two-column text only'),
+        ('text',     'Text — centered single column'),
+        ('image',    'Image — full-width, no text'),
+        ('occasion', 'Occasion — two-column list'),
+        ('profile',  'Profile — name/bio/certifications'),
+        ('location', 'Location — image + description'),
+        ('program',  'Program — event schedule grid'),
+    ], string='Block Type', required=True)
+
+    # Image / background
+    bg_image = fields.Char(string='BG Image URL', help='Used for type=cover')
+    image = fields.Char(string='Image URL', help='Used for type=split')
+    image_alt = fields.Char(string='Image Alt')
+    image_position = fields.Selection(
+        [('left', 'Left'), ('right', 'Right')], string='Image Position',
+    )
+
+    # Styling
+    bg = fields.Selection([
+        ('black', 'Black'), ('white', 'White'), ('bg', 'BG'),
+        ('grey-light', 'Grey Light'), ('grey-mid', 'Grey Mid'), ('grey-dark', 'Grey Dark'),
+    ], string='Background')
+    text_color = fields.Selection(
+        [('black', 'Black'), ('white', 'White')], string='Text Color',
+    )
+
+    # EN base text values
+    title = fields.Char(string='Title')
+    label = fields.Char(string='Label')
+    subtitle = fields.Char(string='Subtitle')
+    html = fields.Html(string='Body HTML')
+    paragraphs = fields.Text(string='Paragraphs — one per line (used if HTML absent)')
+    footer = fields.Text(string='Footer Lines — one per line')
+    left_items = fields.Text(string='Left Items — one per line (type=occasion)')
+    right_items = fields.Text(string='Right Items — one per line (type=occasion)')
+
+    # Relations
+    profile_id = fields.Many2one('arlet.profile', string='Profile', help='Required for type=profile')
+    location_id = fields.Many2one('arlet.location', string='Location', help='Required for type=location')
+    event_id = fields.Many2one('arlet.event', string='Event', help='Required for type=program')
+    translation_ids = fields.One2many('arlet.content.block.translation', 'block_id', string='Translations')
+
+    def to_api_dict(self, locale='en'):
+        data = {'type': self.type}
+
+        for attr, key in [
+            ('bg_image', 'bgImage'), ('image', 'image'), ('image_alt', 'imageAlt'),
+            ('image_position', 'imagePosition'), ('bg', 'bg'), ('text_color', 'textColor'),
+        ]:
+            val = getattr(self, attr, None)
+            if val:
+                data[key] = val
+
+        for field_name, key in [
+            ('title', 'title'), ('label', 'label'), ('subtitle', 'subtitle'),
+        ]:
+            val = self._t(field_name, locale)
+            if val:
+                data[key] = val
+
+        # html takes priority over paragraphs
+        html = self._t('html', locale)
+        if html:
+            data['html'] = html
+        else:
+            paragraphs = split_lines(self._t('paragraphs', locale))
+            if paragraphs:
+                data['paragraphs'] = paragraphs
+
+        footer = split_lines(self._t('footer', locale))
+        if footer:
+            data['footer'] = footer
+
+        left_items = split_lines(self._t('left_items', locale))
+        if left_items:
+            data['leftItems'] = left_items
+
+        right_items = split_lines(self._t('right_items', locale))
+        if right_items:
+            data['rightItems'] = right_items
+
+        if self.profile_id:
+            data['profile'] = self.profile_id.to_api_dict(locale)
+        if self.location_id:
+            data['location'] = self.location_id.to_api_dict(locale)
+        if self.event_id:
+            data['event'] = self.event_id.to_api_dict(locale)
+
+        return data
+
+
+class ArletContentBlockTranslation(models.Model):
+    _name = 'arlet.content.block.translation'
+    _description = 'Content Block Translation'
+    _inherit = ['arlet.base.translation']
+
+    block_id = fields.Many2one('arlet.content.block', required=True, ondelete='cascade')
+    title = fields.Char(string='Title')
+    label = fields.Char(string='Label')
+    subtitle = fields.Char(string='Subtitle')
+    html = fields.Html(string='Body HTML')
+    paragraphs = fields.Text(string='Paragraphs — one per line')
+    footer = fields.Text(string='Footer Lines — one per line')
+    left_items = fields.Text(string='Left Items — one per line')
+    right_items = fields.Text(string='Right Items — one per line')
+
+    _sql_constraints = [(
+        'locale_block_unique', 'UNIQUE(block_id, locale)',
+        'A translation for this locale already exists for this block.',
+    )]
+
+
+class ArletArticle(models.Model):
+    _name = 'arlet.article'
+    _description = 'Arlet Article'
+    _order = 'status desc, published_at desc'
+    _inherit = ['arlet.translatable.mixin']
+
+    name = fields.Char(string='Internal Name', required=True)
+    # EN base values
+    badge = fields.Char(string='Badge', required=True)
+    title = fields.Char(string='Title', required=True)
+    subtitle = fields.Char(string='Subtitle')
+    description = fields.Text(string='Description / Excerpt')
+    intro = fields.Text(string='Intro Paragraphs — one per line')
+    published_at = fields.Date(string='Published At', required=True)
+    author = fields.Char()
+    location = fields.Char()
+    image = fields.Char(string='Cover Image URL', required=True)
+    slug = fields.Char(string='Slug', default='',
+                       help='Leave empty for drafts with no page yet.')
+    status = fields.Selection(
+        [('published', 'Published'), ('draft', 'Draft')],
+        required=True,
+        default='draft',
+    )
+    # Detail page
+    hero_bg = fields.Char(string='Hero BG Image URL')
+    hero_bg_alt = fields.Char(string='Hero BG Alt')
+    content_ids = fields.One2many('arlet.content.block', 'article_id', string='Content Blocks')
+    translation_ids = fields.One2many('arlet.article.translation', 'article_id', string='Translations')
+
+    def _base_dict(self, locale='en'):
+        return {
+            'id': str(self.id),
+            'badge': self._t('badge', locale),
+            'title': self._t('title', locale),
+            'subtitle': self._t('subtitle', locale),
+            'publishedAt': self.published_at.isoformat() if self.published_at else '',
+            'author': self.author or '',
+            'location': self.location or '',
+            'description': self._t('description', locale),
+            'image': self.image or '',
+            'slug': self.slug or '',
+            'status': self.status,
+        }
+
+    def to_list_api_dict(self, locale='en'):
+        return self._base_dict(locale)
+
+    def to_detail_api_dict(self, locale='en'):
+        data = self._base_dict(locale)
+        data.update({
+            'heroBg': self.hero_bg or '',
+            'heroBgAlt': self.hero_bg_alt or '',
+            'intro': split_lines(self._t('intro', locale)),
+            'content': [block.to_api_dict(locale) for block in self.content_ids],
+        })
+        return data
+
+
+class ArletArticleTranslation(models.Model):
+    _name = 'arlet.article.translation'
+    _description = 'Article Translation'
+    _inherit = ['arlet.base.translation']
+
+    article_id = fields.Many2one('arlet.article', required=True, ondelete='cascade')
+    badge = fields.Char(string='Badge')
+    title = fields.Char(string='Title')
+    subtitle = fields.Char(string='Subtitle')
+    description = fields.Text(string='Description / Excerpt')
+    intro = fields.Text(string='Intro Paragraphs — one per line')
+
+    _sql_constraints = [(
+        'locale_article_unique', 'UNIQUE(article_id, locale)',
+        'A translation for this locale already exists for this article.',
+    )]

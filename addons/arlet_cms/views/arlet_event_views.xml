@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Program Slot form (popup for translation editing) ─────────── -->
+    <record id="arlet_event_program_slot_form_view" model="ir.ui.view">
+        <field name="name">arlet.event.program.slot.form</field>
+        <field name="model">arlet.event.program.slot</field>
+        <field name="arch" type="xml">
+            <form string="Program Slot">
+                <sheet>
+                    <group>
+                        <field name="sequence"/>
+                        <field name="start_at" placeholder='"7.45 AM"'/>
+                        <field name="end_at"   placeholder='"10.00 AM" — leave empty for single-point'/>
+                        <field name="activity"/>
+                    </group>
+                    <notebook>
+                        <page string="Translations">
+                            <field name="translation_ids">
+                                <list editable="bottom" string="Translations">
+                                    <field name="locale"/>
+                                    <field name="activity"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Program Day form (popup) ──────────────────────────────────── -->
+    <record id="arlet_event_program_day_form_view" model="ir.ui.view">
+        <field name="name">arlet.event.program.day.form</field>
+        <field name="model">arlet.event.program.day</field>
+        <field name="arch" type="xml">
+            <form string="Program Day">
+                <sheet>
+                    <group>
+                        <field name="sequence"/>
+                        <field name="date_label" placeholder='"Friday, July 17th 2025"'/>
+                        <field name="theme"      placeholder='"Gentle Arrival"'/>
+                    </group>
+                    <notebook>
+                        <page string="Slots">
+                            <field name="slot_ids">
+                                <list string="Slots" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="start_at"/>
+                                    <field name="end_at"/>
+                                    <field name="activity"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Translations">
+                            <field name="translation_ids">
+                                <list editable="bottom" string="Translations">
+                                    <field name="locale"/>
+                                    <field name="date_label"/>
+                                    <field name="theme"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Event list ────────────────────────────────────────────────── -->
+    <record id="arlet_event_list_view" model="ir.ui.view">
+        <field name="name">arlet.event.list</field>
+        <field name="model">arlet.event</field>
+        <field name="arch" type="xml">
+            <list string="Events">
+                <field name="name"/>
+                <field name="category"/>
+                <field name="title"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="slug"/>
+                <field name="coming_soon"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Event form ────────────────────────────────────────────────── -->
+    <record id="arlet_event_form_view" model="ir.ui.view">
+        <field name="name">arlet.event.form</field>
+        <field name="model">arlet.event</field>
+        <field name="arch" type="xml">
+            <form string="Event">
+                <sheet>
+                    <group>
+                        <group string="General">
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="slug" placeholder="leave empty if no detail page"/>
+                            <field name="coming_soon"/>
+                        </group>
+                        <group string="Media">
+                            <field name="image" placeholder="https://..."/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Content (EN)">
+                            <group>
+                                <field name="title"/>
+                                <field name="location"/>
+                                <field name="description"/>
+                            </group>
+                        </page>
+                        <page string="Translations">
+                            <field name="translation_ids">
+                                <list editable="bottom" string="Translations">
+                                    <field name="locale"/>
+                                    <field name="title"/>
+                                    <field name="location"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Program">
+                            <field name="program_ids">
+                                <list string="Program Days">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="date_label"/>
+                                    <field name="theme"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Action ────────────────────────────────────────────────────── -->
+    <record id="arlet_event_action" model="ir.actions.act_window">
+        <field name="name">Events</field>
+        <field name="res_model">arlet.event</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

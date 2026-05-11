@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Content Block Translation form (popup) ────────────────────── -->
+    <record id="arlet_content_block_translation_form_view" model="ir.ui.view">
+        <field name="name">arlet.content.block.translation.form</field>
+        <field name="model">arlet.content.block.translation</field>
+        <field name="arch" type="xml">
+            <form string="Block Translation">
+                <sheet>
+                    <group>
+                        <field name="locale"/>
+                        <field name="title"/>
+                        <field name="label"/>
+                        <field name="subtitle"/>
+                    </group>
+                    <group string="Body">
+                        <field name="html" widget="html" nolabel="1"/>
+                        <field name="paragraphs" placeholder="One paragraph per line (used if HTML empty)"/>
+                        <field name="footer"     placeholder="One footer line per line"/>
+                        <field name="left_items"  placeholder="One item per line (type=occasion)"/>
+                        <field name="right_items" placeholder="One item per line (type=occasion)"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Content Block form ────────────────────────────────────────── -->
+    <record id="arlet_content_block_form_view" model="ir.ui.view">
+        <field name="name">arlet.content.block.form</field>
+        <field name="model">arlet.content.block</field>
+        <field name="arch" type="xml">
+            <form string="Content Block">
+                <sheet>
+                    <group>
+                        <group string="Layout">
+                            <field name="type"/>
+                            <field name="sequence"/>
+                            <field name="bg"/>
+                            <field name="text_color"/>
+                            <field name="image_position"/>
+                        </group>
+                        <group string="Media">
+                            <field name="bg_image" placeholder="https://... (type=cover)"/>
+                            <field name="image"    placeholder="https://... (type=split)"/>
+                            <field name="image_alt"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Content (EN)">
+                            <group>
+                                <field name="title"/>
+                                <field name="label"/>
+                                <field name="subtitle"/>
+                            </group>
+                            <field name="html" widget="html"/>
+                            <group>
+                                <field name="paragraphs"  placeholder="One paragraph per line"/>
+                                <field name="footer"      placeholder="One footer line per line"/>
+                                <field name="left_items"  placeholder="One item per line (type=occasion)"/>
+                                <field name="right_items" placeholder="One item per line (type=occasion)"/>
+                            </group>
+                        </page>
+                        <page string="Translations">
+                            <field name="translation_ids">
+                                <list string="Translations">
+                                    <field name="locale"/>
+                                    <field name="title"/>
+                                    <field name="subtitle"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Relations">
+                            <group>
+                                <field name="profile_id"/>
+                                <field name="location_id"/>
+                                <field name="event_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Profile list ──────────────────────────────────────────────── -->
+    <record id="arlet_profile_list_view" model="ir.ui.view">
+        <field name="name">arlet.profile.list</field>
+        <field name="model">arlet.profile</field>
+        <field name="arch" type="xml">
+            <list string="Profiles">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="label"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Profile form ──────────────────────────────────────────────── -->
+    <record id="arlet_profile_form_view" model="ir.ui.view">
+        <field name="name">arlet.profile.form</field>
+        <field name="model">arlet.profile</field>
+        <field name="arch" type="xml">
+            <form string="Profile">
+                <sheet>
+                    <group>
+                        <group string="Identity">
+                            <field name="name"/>
+                            <field name="title"/>
+                            <field name="label"/>
+                        </group>
+                        <group string="Media">
+                            <field name="image"         placeholder="https://..."/>
+                            <field name="image_alt"/>
+                            <field name="image_caption"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Content (EN)">
+                            <field name="html" widget="html"/>
+                            <group>
+                                <field name="list_label"/>
+                                <field name="list_items" placeholder="One certification per line"/>
+                            </group>
+                        </page>
+                        <page string="Translations">
+                            <field name="translation_ids">
+                                <list string="Translations" editable="bottom">
+                                    <field name="locale"/>
+                                    <field name="list_label"/>
+                                    <field name="list_items"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Links">
+                            <field name="link_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="label"/>
+                                    <field name="value"/>
+                                    <field name="href"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Article list ──────────────────────────────────────────────── -->
+    <record id="arlet_article_list_view" model="ir.ui.view">
+        <field name="name">arlet.article.list</field>
+        <field name="model">arlet.article</field>
+        <field name="arch" type="xml">
+            <list string="Articles">
+                <field name="name"/>
+                <field name="status"/>
+                <field name="title"/>
+                <field name="badge"/>
+                <field name="published_at"/>
+                <field name="slug"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Article form ──────────────────────────────────────────────── -->
+    <record id="arlet_article_form_view" model="ir.ui.view">
+        <field name="name">arlet.article.form</field>
+        <field name="model">arlet.article</field>
+        <field name="arch" type="xml">
+            <form string="Article">
+                <sheet>
+                    <group>
+                        <group string="General">
+                            <field name="name"/>
+                            <field name="status"/>
+                            <field name="published_at"/>
+                            <field name="author"/>
+                            <field name="location"/>
+                            <field name="slug" placeholder="leave empty for drafts"/>
+                        </group>
+                        <group string="Cover Image">
+                            <field name="image"      placeholder="https://..."/>
+                            <field name="hero_bg"    placeholder="https://... (detail page hero)"/>
+                            <field name="hero_bg_alt"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Content (EN)">
+                            <group>
+                                <field name="badge"/>
+                                <field name="title"/>
+                                <field name="subtitle"/>
+                                <field name="description"/>
+                                <field name="intro" placeholder="One intro paragraph per line"/>
+                            </group>
+                        </page>
+                        <page string="Translations">
+                            <field name="translation_ids">
+                                <list editable="bottom" string="Translations">
+                                    <field name="locale"/>
+                                    <field name="badge"/>
+                                    <field name="title"/>
+                                    <field name="subtitle"/>
+                                    <field name="description"/>
+                                    <field name="intro"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Content Blocks">
+                            <field name="content_ids">
+                                <list string="Blocks">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="type"/>
+                                    <field name="title"/>
+                                    <field name="bg"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Actions ───────────────────────────────────────────────────── -->
+    <record id="arlet_article_action" model="ir.actions.act_window">
+        <field name="name">Articles</field>
+        <field name="res_model">arlet.article</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="arlet_profile_action" model="ir.actions.act_window">
+        <field name="name">Profiles</field>
+        <field name="res_model">arlet.profile</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
