@@ -94,6 +94,28 @@ class ArletApiController(http.Controller):
         return request.make_json_response(article.to_detail_api_dict(locale))
 
     # ------------------------------------------------------------------
+    # GET /api/arlet/locales
+    # ------------------------------------------------------------------
+    @http.route(
+        '/api/arlet/locales',
+        type='http',
+        auth='public',
+        methods=['GET'],
+        csrf=False,
+        cors=_CORS,
+    )
+    def list_locales(self, **kwargs):
+        err = self._check_api_key()
+        if err:
+            return err
+        locales = request.env['arlet.locale'].sudo().search([], order='code asc')
+        # Always prepend EN (the base language — not stored in arlet.locale)
+        data = [{'code': 'en', 'name': 'English'}] + [
+            {'code': loc.code, 'name': loc.name} for loc in locales
+        ]
+        return request.make_json_response(data)
+
+    # ------------------------------------------------------------------
     # GET /api/arlet/locations
     # ------------------------------------------------------------------
     @http.route(
