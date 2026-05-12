@@ -134,6 +134,11 @@ class ArletContentBlock(models.Model):
     text_color = fields.Selection(
         [('black', 'Black'), ('white', 'White')], string='Text Color',
     )
+    padding_y = fields.Selection([
+        ('small',  'Small'),
+        ('medium', 'Medium'),
+        ('large',  'Large'),
+    ], string='Padding Y')
 
     # EN base text values
     title = fields.Char(string='Title')
@@ -165,6 +170,7 @@ class ArletContentBlock(models.Model):
         for attr, key in [
             ('image_alt', 'imageAlt'),
             ('image_position', 'imagePosition'), ('bg', 'bg'), ('text_color', 'textColor'),
+            ('padding_y', 'paddingY'),
         ]:
             val = getattr(self, attr, None)
             if val:

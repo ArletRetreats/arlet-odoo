@@ -49,6 +49,7 @@
                             <field name="sequence"/>
                             <field name="bg"/>
                             <field name="text_color"/>
+                            <field name="padding_y"/>
                             <field name="image_position" invisible="type not in ('split', 'half', 'testimonial')"/>
                         </group>
                         <group string="Media" invisible="type not in ('cover', 'split', 'testimonial', 'image')">
