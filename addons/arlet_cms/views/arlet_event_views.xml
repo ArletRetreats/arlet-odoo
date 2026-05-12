@@ -115,15 +115,17 @@
                         <page string="Content (EN)">
                             <group>
                                 <field name="title"/>
+                                <field name="subtitle"/>
                                 <field name="location"/>
                                 <field name="description"/>
                             </group>
                         </page>
                         <page string="Translations">
-                            <field name="translation_ids">
-                                <list editable="bottom" string="Translations">
+                            <field name="translation_ids" context="{'form_view_ref': 'arlet_cms.arlet_event_translation_form_view'}">
+                                <list string="Translations">
                                     <field name="locale"/>
                                     <field name="title"/>
+                                    <field name="subtitle"/>
                                     <field name="location"/>
                                     <field name="description"/>
                                 </list>
@@ -150,6 +152,25 @@
                             </field>
                         </page>
                     </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Event Translation form (popup) ───────────────────────────── -->
+    <record id="arlet_event_translation_form_view" model="ir.ui.view">
+        <field name="name">arlet.event.translation.form</field>
+        <field name="model">arlet.event.translation</field>
+        <field name="arch" type="xml">
+            <form string="Event Translation">
+                <sheet>
+                    <group>
+                        <field name="locale"/>
+                        <field name="title"/>
+                        <field name="subtitle"/>
+                        <field name="location"/>
+                        <field name="description"/>
+                    </group>
                 </sheet>
             </form>
         </field>
