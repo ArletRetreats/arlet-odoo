@@ -8,8 +8,19 @@
     <menuitem id="menu_arlet_events"
               name="Events"
               parent="menu_arlet_cms_root"
+              sequence="10"/>
+
+    <menuitem id="menu_arlet_events_list"
+              name="All Events"
+              parent="menu_arlet_events"
               action="arlet_event_action"
               sequence="10"/>
+
+    <menuitem id="menu_arlet_event_categories"
+              name="Categories"
+              parent="menu_arlet_events"
+              action="arlet_event_category_action"
+              sequence="20"/>
 
     <menuitem id="menu_arlet_articles"
               name="Articles"

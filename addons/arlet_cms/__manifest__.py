@@ -14,6 +14,7 @@
         'data/arlet_locale_data.xml',
         'views/arlet_locale_views.xml',
         'views/arlet_location_views.xml',
+        'views/arlet_event_category_views.xml',
         'views/arlet_event_views.xml',
         'views/arlet_article_views.xml',
         'views/arlet_page_config_views.xml',

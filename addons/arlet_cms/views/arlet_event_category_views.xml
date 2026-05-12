@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Event Category list ───────────────────────────────────────── -->
+    <record id="arlet_event_category_list_view" model="ir.ui.view">
+        <field name="name">arlet.event.category.list</field>
+        <field name="model">arlet.event.category</field>
+        <field name="arch" type="xml">
+            <list string="Event Categories" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="key" readonly="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Event Category form ───────────────────────────────────────── -->
+    <record id="arlet_event_category_form_view" model="ir.ui.view">
+        <field name="name">arlet.event.category.form</field>
+        <field name="model">arlet.event.category</field>
+        <field name="arch" type="xml">
+            <form string="Event Category">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="key" readonly="1"/>
+                        <field name="sequence"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Action ────────────────────────────────────────────────────── -->
+    <record id="arlet_event_category_action" model="ir.actions.act_window">
+        <field name="name">Event Categories</field>
+        <field name="res_model">arlet.event.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

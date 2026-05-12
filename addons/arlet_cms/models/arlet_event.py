@@ -9,12 +9,11 @@ class ArletEvent(models.Model):
     _inherit = ['arlet.translatable.mixin']
 
     name = fields.Char(string='Internal Name', required=True)
-    category = fields.Selection([
-        ('retreat', 'Retreat'),
-        ('dinner', 'Dinner'),
-        ('workshop', 'Workshop'),
-        ('experience', 'Experience'),
-    ], required=True)
+    category = fields.Many2one(
+        'arlet.event.category',
+        string='Category',
+        ondelete='restrict',
+    )
     # EN base values (used as fallback when translation is missing)
     title = fields.Char(string='Title', required=True)
     location = fields.Char(string='Location')
@@ -55,7 +54,8 @@ class ArletEvent(models.Model):
     def _base_dict(self, locale='en'):
         data = {
             'id': str(self.id),
-            'category': self.category.capitalize() if self.category else '',
+            'category': self.category.name if self.category else '',
+            'categoryKey': self.category.key if self.category else '',
             'title': self._t('title', locale),
             'startDate': self.start_date.isoformat() if self.start_date else '',
             'endDate': self.end_date.isoformat() if self.end_date else '',
