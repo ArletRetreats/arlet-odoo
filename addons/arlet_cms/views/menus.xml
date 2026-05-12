@@ -57,4 +57,10 @@
               action="arlet_locale_action"
               sequence="10"/>
 
+    <menuitem id="menu_arlet_hubspot_forms"
+              name="HubSpot Forms"
+              parent="menu_arlet_configuration"
+              action="arlet_hubspot_form_action"
+              sequence="20"/>
+
 </odoo>

@@ -115,6 +115,7 @@ class ArletContentBlock(models.Model):
         ('testimonial', 'Testimonial — quote with optional image'),
         ('location', 'Location — image + description'),
         ('program',  'Program — event schedule grid'),
+        ('form',     'Form — embedded HubSpot form'),
     ], string='Block Type', required=True)
 
     # Image / background
@@ -155,6 +156,7 @@ class ArletContentBlock(models.Model):
     )
     location_id = fields.Many2one('arlet.location', string='Location', help='Required for type=location')
     event_id = fields.Many2one('arlet.event', string='Event', help='Required for type=program')
+    hubspot_form_id = fields.Many2one('arlet.hubspot.form', string='HubSpot Form', help='Required for type=form')
     translation_ids = fields.One2many('arlet.content.block.translation', 'block_id', string='Translations')
 
     def to_api_dict(self, locale='en'):
@@ -219,6 +221,9 @@ class ArletContentBlock(models.Model):
             data['location'] = self.location_id.to_api_dict(locale)
         if self.event_id:
             data['event'] = self.event_id.to_api_dict(locale)
+        if self.hubspot_form_id:
+            data['formPortalId'] = self.hubspot_form_id.portal_id or ''
+            data['formGuid'] = self.hubspot_form_id.guid or ''
 
         return data
 

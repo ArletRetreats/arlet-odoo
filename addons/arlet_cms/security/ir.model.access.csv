@@ -35,3 +35,5 @@ access_arlet_location_public,arlet.location public,model_arlet_location,,1,0,0,0
 access_arlet_location_user,arlet.location user,model_arlet_location,base.group_user,1,1,1,1
 access_arlet_location_translation_public,arlet.location.translation public,model_arlet_location_translation,,1,0,0,0
 access_arlet_location_translation_user,arlet.location.translation user,model_arlet_location_translation,base.group_user,1,1,1,1
+access_arlet_hubspot_form_public,arlet.hubspot.form public,model_arlet_hubspot_form,,1,0,0,0
+access_arlet_hubspot_form_user,arlet.hubspot.form user,model_arlet_hubspot_form,base.group_user,1,1,1,1
