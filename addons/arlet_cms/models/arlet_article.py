@@ -229,6 +229,7 @@ class ArletContentBlockTranslation(models.Model):
     _inherit = ['arlet.base.translation']
 
     block_id = fields.Many2one('arlet.content.block', required=True, ondelete='cascade')
+    block_type = fields.Selection(related='block_id.type', string='Block Type', store=False)
     title = fields.Char(string='Title')
     label = fields.Char(string='Label')
     subtitle = fields.Char(string='Subtitle')
