@@ -80,7 +80,7 @@
                             </group>
                         </page>
                         <page string="Translations">
-                            <field name="translation_ids">
+                            <field name="translation_ids" context="{'form_view_ref': 'arlet_cms.arlet_content_block_translation_form_view'}">
                                 <list string="Translations">
                                     <field name="locale"/>
                                     <field name="title"/>
