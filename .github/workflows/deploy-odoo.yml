@@ -47,10 +47,6 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Deploy to ECS
+      - name: Image pushed
         run: |
-          aws ecs update-service \
-            --cluster arlet-cluster \
-            --service arlet-odoo-service \
-            --force-new-deployment \
-            --region ${{ env.AWS_REGION }}
+          echo "Pushed: ${{ steps.build-image.outputs.image }}"
