@@ -3,6 +3,8 @@ access_arlet_locale_public,arlet.locale public,model_arlet_locale,,1,0,0,0
 access_arlet_locale_user,arlet.locale user,model_arlet_locale,base.group_user,1,1,1,1
 access_arlet_event_public,arlet.event public,model_arlet_event,,1,0,0,0
 access_arlet_event_user,arlet.event user,model_arlet_event,base.group_user,1,1,1,1
+access_arlet_event_category_public,arlet.event.category public,model_arlet_event_category,,1,0,0,0
+access_arlet_event_category_user,arlet.event.category user,model_arlet_event_category,base.group_user,1,1,1,1
 access_arlet_event_translation_public,arlet.event.translation public,model_arlet_event_translation,,1,0,0,0
 access_arlet_event_translation_user,arlet.event.translation user,model_arlet_event_translation,base.group_user,1,1,1,1
 access_arlet_event_program_day_public,arlet.event.program.day public,model_arlet_event_program_day,,1,0,0,0
