@@ -5,14 +5,14 @@ on:
     branches:
       - release
     paths:
-      - 'addons/**'
-      - 'Dockerfile'
-      - 'requirements.txt'
-      - 'config/**'
+      - "addons/**"
+      - "Dockerfile"
+      - "requirements.txt"
+      - "config/**"
       - ".github/workflows/deploy-odoo.yml"
 
 env:
-  AWS_REGION: ap-northeast-2
+  AWS_REGION: ap-southeast-2
   ECR_REPOSITORY: arlet-odoo-dev
 
 jobs:
