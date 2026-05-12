@@ -16,6 +16,7 @@ class ArletEvent(models.Model):
     )
     # EN base values (used as fallback when translation is missing)
     title = fields.Char(string='Title', required=True)
+    subtitle = fields.Char(string='Subtitle')
     location = fields.Char(string='Location')
     description = fields.Text(string='Description')
     image = fields.Image(string='Image', max_width=0, max_height=0)
@@ -57,6 +58,7 @@ class ArletEvent(models.Model):
             'category': self.category.name if self.category else '',
             'categoryKey': self.category.key if self.category else '',
             'title': self._t('title', locale),
+            'subtitle': self._t('subtitle', locale),
             'startDate': self.start_date.isoformat() if self.start_date else '',
             'endDate': self.end_date.isoformat() if self.end_date else '',
             'location': self._t('location', locale),
@@ -118,6 +120,7 @@ class ArletEventTranslation(models.Model):
 
     event_id = fields.Many2one('arlet.event', required=True, ondelete='cascade')
     title = fields.Char(string='Title')
+    subtitle = fields.Char(string='Subtitle')
     location = fields.Char(string='Location')
     description = fields.Text(string='Description')
 
