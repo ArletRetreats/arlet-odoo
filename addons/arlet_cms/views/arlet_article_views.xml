@@ -8,20 +8,28 @@
         <field name="arch" type="xml">
             <form string="Block Translation">
                 <sheet>
-                    <group>
+                    <field name="block_type" invisible="1"/>
+                    <group invisible="block_type in ('image', 'profile', 'location', 'program')">
                         <field name="locale"/>
                         <field name="title"/>
-                        <field name="label"/>
-                        <field name="subtitle"/>
+                        <field name="label"    invisible="block_type in ('testimonial', 'profiles', 'occasion')"/>
+                        <field name="subtitle" invisible="block_type in ('occasion',)"/>
                     </group>
-                    <separator string="HTML Body"/>
-                    <field name="html" widget="html" nolabel="1"/>
-                    <separator string="Text Fields"/>
-                    <group>
-                        <field name="paragraphs" placeholder="One paragraph per line (used if HTML empty)"/>
-                        <field name="footer"     placeholder="One footer line per line"/>
-                        <field name="left_items"  placeholder="One item per line (type=occasion)"/>
-                        <field name="right_items" placeholder="One item per line (type=occasion)"/>
+                    <group invisible="block_type in ('image', 'profile', 'location', 'program')"
+                           col="1">
+                        <separator string="HTML Body"
+                                   invisible="block_type in ('occasion', 'profiles', 'testimonial')"/>
+                        <field name="html" widget="html" nolabel="1"
+                               invisible="block_type in ('occasion', 'profiles', 'testimonial')"/>
+                        <separator string="Text Fields"/>
+                        <field name="paragraphs" placeholder="One paragraph per line (used if HTML empty)"
+                               invisible="block_type in ('occasion', 'profiles')"/>
+                        <field name="footer"     placeholder="One footer line per line"
+                               invisible="block_type == 'profiles'"/>
+                        <field name="left_items"  placeholder="Left column — one item per line"
+                               invisible="block_type != 'occasion'"/>
+                        <field name="right_items" placeholder="Right column — one item per line"
+                               invisible="block_type != 'occasion'"/>
                     </group>
                 </sheet>
             </form>
