@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List view -->
+    <record id="arlet_hubspot_form_list_view" model="ir.ui.view">
+        <field name="name">arlet.hubspot.form.list</field>
+        <field name="model">arlet.hubspot.form</field>
+        <field name="arch" type="xml">
+            <list string="HubSpot Forms" create="false" delete="false">
+                <field name="name"/>
+                <field name="portal_id"/>
+                <field name="guid"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="arlet_hubspot_form_form_view" model="ir.ui.view">
+        <field name="name">arlet.hubspot.form.form</field>
+        <field name="model">arlet.hubspot.form</field>
+        <field name="arch" type="xml">
+            <form string="HubSpot Form" create="false">
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="portal_id" readonly="1"/>
+                        <field name="guid" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="arlet_hubspot_form_action" model="ir.actions.act_window">
+        <field name="name">HubSpot Forms</field>
+        <field name="res_model">arlet.hubspot.form</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Sync wizard action (server action) -->
+    <record id="arlet_hubspot_sync_action" model="ir.actions.server">
+        <field name="name">Sync from HubSpot</field>
+        <field name="model_id" ref="model_arlet_hubspot_form"/>
+        <field name="binding_model_id" ref="model_arlet_hubspot_form"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = model.sync_from_hubspot()</field>
+    </record>
+
+</odoo>

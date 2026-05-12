@@ -12,16 +12,16 @@
                     <group>
                         <field name="locale"/>
                     </group>
-                    <group invisible="block_type in ('image', 'profile', 'location', 'program')">
+                    <group invisible="block_type in ('image', 'profile', 'location', 'program', 'form')">
                         <field name="title"/>
                         <field name="label"    invisible="block_type in ('testimonial', 'profiles', 'occasion')"/>
                         <field name="subtitle" invisible="block_type == 'occasion'"/>
                     </group>
                     <separator string="HTML Body"
-                               invisible="block_type in ('image', 'profile', 'location', 'program', 'occasion', 'profiles', 'testimonial')"/>
+                               invisible="block_type in ('image', 'profile', 'location', 'program', 'form', 'occasion', 'profiles', 'testimonial')"/>
                     <field name="html" widget="html" nolabel="1"
-                           invisible="block_type in ('image', 'profile', 'location', 'program', 'occasion', 'profiles', 'testimonial')"/>
-                    <group invisible="block_type in ('image', 'profile', 'location', 'program')">
+                           invisible="block_type in ('image', 'profile', 'location', 'program', 'form', 'occasion', 'profiles', 'testimonial')"/>
+                    <group invisible="block_type in ('image', 'profile', 'location', 'program', 'form')">
                         <field name="paragraphs" placeholder="One paragraph per line (used if HTML empty)"
                                invisible="block_type in ('occasion', 'profiles')"/>
                         <field name="footer"     placeholder="One footer line per line"
@@ -71,9 +71,12 @@
                     <group string="Event (Program)" invisible="type != 'program'">
                         <field name="event_id" options="{'no_create': True}"/>
                     </group>
+                    <group string="HubSpot Form" invisible="type != 'form'">
+                        <field name="hubspot_form_id" options="{'no_create': True}"/>
+                    </group>
 
                     <notebook>
-                        <page string="Content (EN)" invisible="type in ('image', 'profile', 'location', 'program')">
+                        <page string="Content (EN)" invisible="type in ('image', 'profile', 'location', 'program', 'form')">
                             <group>
                                 <field name="title"/>
                                 <field name="label"    invisible="type in ('testimonial', 'profiles', 'occasion')"/>

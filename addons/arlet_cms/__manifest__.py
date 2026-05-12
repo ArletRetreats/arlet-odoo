@@ -16,6 +16,7 @@
         'views/arlet_location_views.xml',
         'views/arlet_event_category_views.xml',
         'views/arlet_event_views.xml',
+        'views/arlet_hubspot_views.xml',
         'views/arlet_article_views.xml',
         'views/arlet_page_config_views.xml',
         'views/menus.xml',
