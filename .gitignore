@@ -11,5 +11,5 @@ postgres_data/
 *.log
 data/
 
-# Local scripts (not docker scripts)
-scripts/seed_sample_data.py
+# Local scripts
+scripts/

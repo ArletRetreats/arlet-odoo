@@ -14,11 +14,5 @@ COPY ./addons /mnt/extra-addons
 
 # Copy Odoo config
 COPY ./config/odoo.conf /etc/odoo/odoo.conf
-COPY ./scripts/docker-entrypoint.sh /docker-entrypoint.sh
-
-USER root
-RUN chmod +x /docker-entrypoint.sh
 
 USER odoo
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
