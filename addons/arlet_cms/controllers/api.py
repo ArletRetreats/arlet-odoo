@@ -207,3 +207,27 @@ class ArletApiController(http.Controller):
         locations = request.env['arlet.location'].sudo().search([])
         data = [loc.to_list_api_dict() for loc in locations]
         return request.make_json_response(data)
+
+    # ------------------------------------------------------------------
+    # GET /api/arlet/locations/<slug>?locale=en
+    # ------------------------------------------------------------------
+    @http.route(
+        '/api/arlet/locations/<string:slug>',
+        type='http',
+        auth='public',
+        methods=['GET'],
+        csrf=False,
+        cors=_CORS,
+    )
+    def get_location_by_slug(self, slug, locale='en', **kwargs):
+        err = self._check_api_key()
+        if err:
+            return err
+        locale = locale if locale in _VALID_LOCALES else 'en'
+        location = request.env['arlet.location'].sudo().search(
+            [('slug', '=', slug)],
+            limit=1,
+        )
+        if not location:
+            return request.make_json_response(None, status=404)
+        return request.make_json_response(location.to_detail_api_dict(locale))
