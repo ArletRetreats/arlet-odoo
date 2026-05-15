@@ -63,16 +63,44 @@ class ArletApiController(http.Controller):
         csrf=False,
         cors=_CORS,
     )
-    def list_events(self, locale='en', owner_slug='', **kwargs):
+    def list_events(self, locale='en', owner_slug='', q='', page='', limit='12', status='all', **kwargs):
         err = self._check_api_key()
         if err:
             return err
         locale = locale if locale in _VALID_LOCALES else 'en'
         domain = []
         if owner_slug:
-            domain = [('owner_id.slug', '=', owner_slug)]
-        events = request.env['arlet.event'].sudo().search(domain)
-        data = [event.to_api_dict(locale) for event in events]
+            domain += [('owner_id.slug', '=', owner_slug)]
+        if q:
+            domain += [('title', 'ilike', q)]
+        from datetime import date
+        today = date.today().isoformat()
+        if status == 'upcoming':
+            domain += [('start_date', '>=', today)]
+        elif status == 'archived':
+            domain += [('start_date', '<', today)]
+        all_events = request.env['arlet.event'].sudo().search(domain)
+        # Paginate when page param is provided
+        if page:
+            try:
+                page_num = max(1, int(page))
+                page_size = max(1, int(limit))
+            except (ValueError, TypeError):
+                page_num, page_size = 1, 12
+            total = len(all_events)
+            import math
+            pages = math.ceil(total / page_size) if page_size else 1
+            offset = (page_num - 1) * page_size
+            paged = all_events[offset:offset + page_size]
+            data = [e.to_api_dict(locale) for e in paged]
+            return request.make_json_response({
+                'items': data,
+                'total': total,
+                'page': page_num,
+                'limit': page_size,
+                'pages': pages,
+            })
+        data = [e.to_api_dict(locale) for e in all_events]
         return request.make_json_response(data)
 
     # ------------------------------------------------------------------
@@ -86,13 +114,36 @@ class ArletApiController(http.Controller):
         csrf=False,
         cors=_CORS,
     )
-    def list_articles(self, locale='en', **kwargs):
+    def list_articles(self, locale='en', q='', page='', limit='12', **kwargs):
         err = self._check_api_key()
         if err:
             return err
         locale = locale if locale in _VALID_LOCALES else 'en'
-        articles = request.env['arlet.article'].sudo().search([])
-        data = [article.to_list_api_dict(locale) for article in articles]
+        domain = []
+        if q:
+            domain += [('title', 'ilike', q)]
+        all_articles = request.env['arlet.article'].sudo().search(domain)
+        # Paginate when page param is provided
+        if page:
+            try:
+                page_num = max(1, int(page))
+                page_size = max(1, int(limit))
+            except (ValueError, TypeError):
+                page_num, page_size = 1, 12
+            total = len(all_articles)
+            import math
+            pages = math.ceil(total / page_size) if page_size else 1
+            offset = (page_num - 1) * page_size
+            paged = all_articles[offset:offset + page_size]
+            data = [a.to_list_api_dict(locale) for a in paged]
+            return request.make_json_response({
+                'items': data,
+                'total': total,
+                'page': page_num,
+                'limit': page_size,
+                'pages': pages,
+            })
+        data = [a.to_list_api_dict(locale) for a in all_articles]
         return request.make_json_response(data)
 
     # ------------------------------------------------------------------
