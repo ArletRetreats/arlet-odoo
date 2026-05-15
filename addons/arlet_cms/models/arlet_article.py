@@ -102,6 +102,7 @@ class ArletContentBlock(models.Model):
 
     article_id = fields.Many2one('arlet.article', ondelete='cascade')
     event_article_id = fields.Many2one('arlet.event', ondelete='cascade')
+    location_article_id = fields.Many2one('arlet.location', ondelete='cascade')
     sequence = fields.Integer(default=10)
     type = fields.Selection([
         ('cover',    'Cover — full-width bg image + text'),
