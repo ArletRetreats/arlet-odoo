@@ -6,7 +6,7 @@
         <field name="name">arlet.page.config.list</field>
         <field name="model">arlet.page.config</field>
         <field name="arch" type="xml">
-            <list string="Page Configurations">
+            <list string="Page Configurations" create="false" delete="false">
                 <field name="page_key"/>
             </list>
         </field>
@@ -17,7 +17,7 @@
         <field name="name">arlet.page.config.form</field>
         <field name="model">arlet.page.config</field>
         <field name="arch" type="xml">
-            <form string="Page Configuration">
+            <form string="Page Configuration" create="false" delete="false">
                 <sheet>
                     <group>
                         <field name="page_key"/>
