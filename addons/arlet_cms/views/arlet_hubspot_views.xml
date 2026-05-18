@@ -7,6 +7,9 @@
         <field name="model">arlet.hubspot.form</field>
         <field name="arch" type="xml">
             <list string="HubSpot Forms" create="false" delete="false">
+                <header>
+                    <button name="sync_from_hubspot" type="object" string="Sync from HubSpot" class="btn-primary"/>
+                </header>
                 <field name="name"/>
                 <field name="portal_id"/>
                 <field name="guid"/>
