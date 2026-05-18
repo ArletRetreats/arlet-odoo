@@ -21,6 +21,9 @@
                 <sheet>
                     <group>
                         <field name="page_key"/>
+                        <field name="hubspot_form_id"
+                               options="{'no_create': True}"
+                               placeholder="Select a synced HubSpot form"/>
                         <field name="featured_article_id"
                                options="{'no_create': True}"
                                domain="[('status', '=', 'published')]"/>
