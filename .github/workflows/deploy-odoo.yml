@@ -12,8 +12,8 @@ on:
       - ".github/workflows/deploy-odoo.yml"
 
 env:
-  AWS_REGION: ap-southeast-2
-  ECR_REPOSITORY: arlet-odoo-dev
+  AWS_REGION: eu-central-1
+  ECR_REPOSITORY: arlet-odoo-prod
 
 jobs:
   build-and-push:
@@ -27,8 +27,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
