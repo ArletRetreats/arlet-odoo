@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="page_config_meet_arlet" model="arlet.page.config">
+        <field name="page_key">meet-arlet</field>
+    </record>
+
+    <record id="page_config_meet_marie" model="arlet.page.config">
+        <field name="page_key">meet-marie</field>
+    </record>
+
+    <record id="page_config_our_pillars" model="arlet.page.config">
+        <field name="page_key">our-pillars</field>
+    </record>
+
+    <record id="page_config_join_arlet" model="arlet.page.config">
+        <field name="page_key">join-arlet</field>
+    </record>
+
+    <record id="page_config_contact_us" model="arlet.page.config">
+        <field name="page_key">contact-us</field>
+    </record>
+
+    <record id="page_config_arlet_x_business" model="arlet.page.config">
+        <field name="page_key">arlet-x-business</field>
+    </record>
+
+</odoo>

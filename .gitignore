@@ -6,10 +6,10 @@ __pycache__/
 # Odoo data volumes
 odoo_data/
 postgres_data/
+data/odoo/
 
 # Logs
 *.log
-data/
 
 # Local scripts
 scripts/
