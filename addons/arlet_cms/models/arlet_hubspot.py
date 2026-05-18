@@ -9,9 +9,10 @@ class ArletHubspotForm(models.Model):
     _rec_name = 'name'
     _order = 'name asc'
 
-    portal_id = fields.Char(string='Portal ID', required=True, readonly=True)
+    portal_id = fields.Char(string='Portal ID', readonly=True)
     guid = fields.Char(string='Form GUID', required=True, readonly=True)
     name = fields.Char(string='Form Name', required=True, readonly=True)
+    fields_json = fields.Json(string='Fields', readonly=True)
 
     _sql_constraints = [(
         'guid_unique', 'UNIQUE(guid)',
@@ -32,8 +33,18 @@ class ArletHubspotForm(models.Model):
     def sync_from_hubspot(self):
         """Fetch all forms from HubSpot and upsert into this model."""
         api_key = self._get_api_key()
-        url = 'https://api.hubapi.com/marketing/v3/forms/'
         headers = {'Authorization': f'Bearer {api_key}'}
+
+        # Fetch portal ID from account info
+        account_resp = requests.get(
+            'https://api.hubapi.com/account-info/v3/details',
+            headers=headers, timeout=15,
+        )
+        if not account_resp.ok:
+            raise UserError(f'HubSpot account-info error {account_resp.status_code}: {account_resp.text}')
+        portal_id = str(account_resp.json().get('portalId', '') or '')
+
+        url = 'https://api.hubapi.com/marketing/v3/forms/'
         all_forms = []
         after = None
 
@@ -53,13 +64,23 @@ class ArletHubspotForm(models.Model):
 
         for form in all_forms:
             guid = form.get('id', '')
-            portal_id = str(form.get('portalId', ''))
             name = form.get('name', guid)
+            fields_data = [
+                {
+                    'name': f.get('name', ''),
+                    'label': f.get('label', ''),
+                    'required': f.get('required', False),
+                    'fieldType': f.get('fieldType', 'single_line_text'),
+                }
+                for group in form.get('fieldGroups', [])
+                for f in group.get('fields', [])
+                if not f.get('hidden')
+            ]
             existing = self.search([('guid', '=', guid)], limit=1)
             if existing:
-                existing.write({'name': name, 'portal_id': portal_id})
+                existing.write({'name': name, 'portal_id': portal_id, 'fields_json': fields_data})
             else:
-                self.create({'guid': guid, 'portal_id': portal_id, 'name': name})
+                self.create({'guid': guid, 'portal_id': portal_id, 'name': name, 'fields_json': fields_data})
 
         return {
             'type': 'ir.actions.client',

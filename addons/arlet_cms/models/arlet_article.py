@@ -231,6 +231,7 @@ class ArletContentBlock(models.Model):
         if self.hubspot_form_id:
             data['formPortalId'] = self.hubspot_form_id.portal_id or ''
             data['formGuid'] = self.hubspot_form_id.guid or ''
+            data['formFields'] = self.hubspot_form_id.fields_json or []
 
         return data
 
