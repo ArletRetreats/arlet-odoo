@@ -5,10 +5,12 @@ from odoo import models, fields
 # New keys can be added here as more pages require CMS-driven content.
 # ---------------------------------------------------------------------------
 _PAGE_KEYS = [
-    ('meet-arlet',   'Meet Arlet'),
-    ('meet-marie',   'Meet Marie'),
-    ('our-pillars',  'Our Pillars'),
-    ('join-arlet',   'Join Arlet'),
+    ('meet-arlet',        'Meet Arlet'),
+    ('meet-marie',        'Meet Marie'),
+    ('our-pillars',       'Our Pillars'),
+    ('join-arlet',        'Join Arlet'),
+    ('contact-us',        'Contact Us'),
+    ('arlet-x-business',  'Arlet x Business'),
 ]
 
 
@@ -21,6 +23,14 @@ class ArletPageConfig(models.Model):
         _PAGE_KEYS,
         string='Page',
         required=True,
+    )
+
+    # ── HubSpot form (e.g. Contact Us page) ───────────────────────────
+    hubspot_form_id = fields.Many2one(
+        'arlet.hubspot.form',
+        string='HubSpot Form',
+        ondelete='set null',
+        help='HubSpot form to embed on this page (e.g. Contact Us).',
     )
 
     # ── Featured article ────────────────────────────────────────────────
@@ -57,6 +67,12 @@ class ArletPageConfig(models.Model):
 
     def to_api_dict(self, locale='en'):
         data = {'pageKey': self.page_key}
+        if self.hubspot_form_id:
+            data['hubspotForm'] = {
+                'portalId': self.hubspot_form_id.portal_id or '',
+                'guid': self.hubspot_form_id.guid or '',
+                'fields': self.hubspot_form_id.fields_json or [],
+            }
         if self.featured_article_id:
             data['featuredArticle'] = self.featured_article_id.to_list_api_dict(locale)
         if self.testimonial_profile_ids:

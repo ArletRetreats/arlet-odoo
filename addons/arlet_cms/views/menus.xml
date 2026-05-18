@@ -63,4 +63,10 @@
               action="arlet_hubspot_form_action"
               sequence="20"/>
 
+    <menuitem id="menu_arlet_hubspot_sync"
+              name="Sync from HubSpot"
+              parent="menu_arlet_configuration"
+              action="arlet_hubspot_sync_action"
+              sequence="21"/>
+
 </odoo>

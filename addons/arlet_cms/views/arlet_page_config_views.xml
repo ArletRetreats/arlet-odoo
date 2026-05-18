@@ -6,7 +6,7 @@
         <field name="name">arlet.page.config.list</field>
         <field name="model">arlet.page.config</field>
         <field name="arch" type="xml">
-            <list string="Page Configurations">
+            <list string="Page Configurations" create="false" delete="false">
                 <field name="page_key"/>
             </list>
         </field>
@@ -17,24 +17,33 @@
         <field name="name">arlet.page.config.form</field>
         <field name="model">arlet.page.config</field>
         <field name="arch" type="xml">
-            <form string="Page Configuration">
+            <form string="Page Configuration" create="false" delete="false">
                 <sheet>
                     <group>
                         <field name="page_key"/>
+                        <field name="hubspot_form_id"
+                               options="{'no_create': True}"
+                               placeholder="Select a synced HubSpot form"
+                               invisible="page_key not in ['contact-us', 'join-arlet', 'arlet-x-business']"/>
                         <field name="featured_article_id"
                                options="{'no_create': True}"
-                               domain="[('status', '=', 'published')]"/>
+                               domain="[('status', '=', 'published')]"
+                               invisible="page_key not in ['meet-arlet', 'meet-marie', 'our-pillars']"/>
                     </group>
-                    <separator string="Testimonial Profiles (e.g. Join Arlet)"/>
-                    <field name="testimonial_profile_ids" nolabel="1">
+                    <separator string="Testimonial Profiles"
+                               invisible="page_key != 'join-arlet'"/>
+                    <field name="testimonial_profile_ids" nolabel="1"
+                           invisible="page_key != 'join-arlet'">
                         <list string="Testimonial Profiles">
                             <field name="name"/>
                             <field name="title"/>
                             <field name="label"/>
                         </list>
                     </field>
-                    <separator string="Featured Events (e.g. Join the Arlet Experience)"/>
-                    <field name="featured_event_ids" nolabel="1">
+                    <separator string="Featured Events"
+                               invisible="page_key != 'join-arlet'"/>
+                    <field name="featured_event_ids" nolabel="1"
+                           invisible="page_key != 'join-arlet'">
                         <list string="Featured Events">
                             <field name="name"/>
                             <field name="start_date"/>
