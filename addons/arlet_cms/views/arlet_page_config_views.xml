@@ -24,7 +24,7 @@
                         <field name="hubspot_form_id"
                                options="{'no_create': True}"
                                placeholder="Select a synced HubSpot form"
-                               invisible="page_key not in ['contact-us', 'join-arlet', 'arlet-x-business']"/>
+                               invisible="page_key not in ['contact-us', 'join-arlet', 'arlet-x-business', 'arlet-x-you']"/>
                         <field name="featured_article_id"
                                options="{'no_create': True}"
                                domain="[('status', '=', 'published')]"
