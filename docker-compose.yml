@@ -35,6 +35,8 @@ services:
       AWS_REGION: ${AWS_REGION:-ap-northeast-2}
       AWS_BUCKETNAME: ${AWS_BUCKETNAME:-arlet-odoo-storage}
       ARLET_API_KEY: ${ARLET_API_KEY:-}
+      ARLET_ODOO_BASE: ${ARLET_ODOO_BASE:-http://localhost:8069}
+      ARLET_WEB_BASE: ${ARLET_WEB_BASE:-http://localhost:3000}
     ports:
       - "${ODOO_PORT:-8069}:8069"
     volumes:
