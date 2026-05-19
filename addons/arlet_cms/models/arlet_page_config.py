@@ -11,6 +11,7 @@ _PAGE_KEYS = [
     ('join-arlet',        'Join Arlet'),
     ('contact-us',        'Contact Us'),
     ('arlet-x-business',  'Arlet x Business'),
+    ('arlet-x-you',       'Arlet x You'),
 ]
 
 
