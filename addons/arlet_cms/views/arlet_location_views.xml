@@ -30,6 +30,10 @@
                             <field name="image_position"/>
                         </group>
                     </group>
+                    <group string="Detail Page">
+                        <field name="hero_bg" widget="image" options="{'size': [128, 128]}"/>
+                        <field name="hero_bg_alt"/>
+                    </group>
                     <notebook>
                         <page string="Content (EN)">
                             <group>
@@ -42,6 +46,16 @@
                                 <list string="Translations">
                                     <field name="locale"/>
                                     <field name="subtitle"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Content Blocks">
+                            <field name="content_ids">
+                                <list string="Blocks">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="type"/>
+                                    <field name="title"/>
+                                    <field name="bg"/>
                                 </list>
                             </field>
                         </page>
