@@ -25,4 +25,8 @@
         <field name="page_key">arlet-x-business</field>
     </record>
 
+    <record id="page_config_arlet_x_you" model="arlet.page.config">
+        <field name="page_key">arlet-x-you</field>
+    </record>
+
 </odoo>
