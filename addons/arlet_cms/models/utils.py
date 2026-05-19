@@ -3,6 +3,7 @@ import re
 import unicodedata
 
 WEB_BASE = os.environ.get('ARLET_WEB_BASE', 'http://localhost:3000')
+ODOO_BASE = os.environ.get('ARLET_ODOO_BASE', 'http://localhost:8069')
 
 
 def slugify(text):

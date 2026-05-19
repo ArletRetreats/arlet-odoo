@@ -1,4 +1,5 @@
 from odoo import models, fields
+from .utils import ODOO_BASE
 
 
 class ArletTranslatableMixin(models.AbstractModel):
@@ -26,7 +27,7 @@ class ArletTranslatableMixin(models.AbstractModel):
         """Return the absolute public URL for a binary/image field, or '' if empty."""
         if not getattr(self, field_name, False):
             return ''
-        base = self.env['ir.config_parameter'].sudo().get_param('web.base.url', 'http://localhost:8069')
+        base = ODOO_BASE
         return f"{base}/web/image/{self._name}/{self.id}/{field_name}"
 
 
