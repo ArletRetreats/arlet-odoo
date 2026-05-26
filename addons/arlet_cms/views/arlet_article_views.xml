@@ -77,7 +77,7 @@
                     </group>
 
                     <notebook>
-                        <page string="Content (EN)" invisible="type in ('image', 'profile', 'location', 'program')">
+                        <page string="Content (EN)" invisible="type in ('image', 'profile', 'location', 'program', 'cards')">
                             <group>
                                 <field name="title"/>
                                 <field name="label"    invisible="type in ('testimonial', 'profiles', 'occasion')"/>
@@ -97,6 +97,14 @@
                                     <field name="locale"/>
                                     <field name="title"/>
                                     <field name="subtitle"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cards (EN)" invisible="type != 'cards'">
+                            <field name="card_ids">
+                                <list string="Cards" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="title"/>
                                 </list>
                             </field>
                         </page>
