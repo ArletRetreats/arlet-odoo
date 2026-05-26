@@ -140,6 +140,11 @@ class ArletContentBlock(models.Model):
         ('medium', 'Medium'),
         ('large',  'Large'),
     ], string='Padding Y')
+    text_align = fields.Selection([
+        ('center', 'Center (max-width)'),
+        ('left',   'Left'),
+        ('right',  'Right'),
+    ], string='Text Align', default='center')
 
     # EN base text values
     title = fields.Char(string='Title')
@@ -171,7 +176,7 @@ class ArletContentBlock(models.Model):
         for attr, key in [
             ('image_alt', 'imageAlt'),
             ('image_position', 'imagePosition'), ('bg', 'bg'), ('text_color', 'textColor'),
-            ('padding_y', 'paddingY'),
+            ('padding_y', 'paddingY'), ('text_align', 'textAlign'),
         ]:
             val = getattr(self, attr, None)
             if val:
