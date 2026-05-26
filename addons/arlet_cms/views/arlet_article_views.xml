@@ -101,9 +101,36 @@
                             </field>
                         </page>
                         <page string="Cards (EN)" invisible="type != 'cards'">
-                            <field name="card_ids">
-                                <list string="Cards" editable="bottom">
+                            <field name="card_ids" context="{'form_view_ref': 'arlet_cms.arlet_content_block_card_form_view'}">
+                                <list string="Cards">
                                     <field name="sequence" widget="handle"/>
+                                    <field name="title"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Content Block Card form (popup) ───────────────────────────── -->
+    <record id="arlet_content_block_card_form_view" model="ir.ui.view">
+        <field name="name">arlet.content.block.card.form</field>
+        <field name="model">arlet.content.block.card</field>
+        <field name="arch" type="xml">
+            <form string="Card">
+                <sheet>
+                    <group>
+                        <field name="sequence"/>
+                        <field name="title"/>
+                    </group>
+                    <field name="html" widget="html"/>
+                    <notebook>
+                        <page string="Translations">
+                            <field name="translation_ids">
+                                <list string="Translations" editable="bottom">
+                                    <field name="locale"/>
                                     <field name="title"/>
                                 </list>
                             </field>
