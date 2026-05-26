@@ -21,10 +21,6 @@ access_arlet_article_translation_public,arlet.article.translation public,model_a
 access_arlet_article_translation_user,arlet.article.translation user,model_arlet_article_translation,base.group_user,1,1,1,1
 access_arlet_content_block_public,arlet.content.block public,model_arlet_content_block,,1,0,0,0
 access_arlet_content_block_user,arlet.content.block user,model_arlet_content_block,base.group_user,1,1,1,1
-access_arlet_content_block_card_public,arlet.content.block.card public,model_arlet_content_block_card,,1,0,0,0
-access_arlet_content_block_card_user,arlet.content.block.card user,model_arlet_content_block_card,base.group_user,1,1,1,1
-access_arlet_content_block_card_translation_public,arlet.content.block.card.translation public,model_arlet_content_block_card_translation,,1,0,0,0
-access_arlet_content_block_card_translation_user,arlet.content.block.card.translation user,model_arlet_content_block_card_translation,base.group_user,1,1,1,1
 access_arlet_content_block_translation_public,arlet.content.block.translation public,model_arlet_content_block_translation,,1,0,0,0
 access_arlet_content_block_translation_user,arlet.content.block.translation user,model_arlet_content_block_translation,base.group_user,1,1,1,1
 access_arlet_profile_public,arlet.profile public,model_arlet_profile,,1,0,0,0

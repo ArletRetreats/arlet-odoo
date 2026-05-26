@@ -117,7 +117,6 @@ class ArletContentBlock(models.Model):
         ('location', 'Location — image + description'),
         ('program',  'Program — event schedule grid'),
         ('form',     'Form — embedded HubSpot form'),
-        ('cards',    'Cards — 2-column grid of titled sections'),
     ], string='Block Type', required=True)
 
     # Image / background
@@ -141,6 +140,11 @@ class ArletContentBlock(models.Model):
         ('medium', 'Medium'),
         ('large',  'Large'),
     ], string='Padding Y')
+    text_align = fields.Selection([
+        ('center', 'Center (max-width)'),
+        ('left',   'Left'),
+        ('right',  'Right'),
+    ], string='Text Align', default='center')
 
     # EN base text values
     title = fields.Char(string='Title')
@@ -164,7 +168,6 @@ class ArletContentBlock(models.Model):
     location_id = fields.Many2one('arlet.location', string='Location', help='Required for type=location')
     event_id = fields.Many2one('arlet.event', string='Event', help='Required for type=program')
     hubspot_form_id = fields.Many2one('arlet.hubspot.form', string='HubSpot Form', help='Required for type=form')
-    card_ids = fields.One2many('arlet.content.block.card', 'block_id', string='Cards')
     translation_ids = fields.One2many('arlet.content.block.translation', 'block_id', string='Translations')
 
     def to_api_dict(self, locale='en'):
@@ -173,7 +176,7 @@ class ArletContentBlock(models.Model):
         for attr, key in [
             ('image_alt', 'imageAlt'),
             ('image_position', 'imagePosition'), ('bg', 'bg'), ('text_color', 'textColor'),
-            ('padding_y', 'paddingY'),
+            ('padding_y', 'paddingY'), ('text_align', 'textAlign'),
         ]:
             val = getattr(self, attr, None)
             if val:
@@ -234,12 +237,6 @@ class ArletContentBlock(models.Model):
             data['formPortalId'] = self.hubspot_form_id.portal_id or ''
             data['formGuid'] = self.hubspot_form_id.guid or ''
             data['formFields'] = self.hubspot_form_id.fields_json or []
-        if self.card_ids:
-            data['cards'] = [
-                {'title': card._t('title', locale), 'html': card._t('html', locale)}
-                for card in self.card_ids
-            ]
-
         return data
 
 
@@ -262,34 +259,6 @@ class ArletContentBlockTranslation(models.Model):
     _sql_constraints = [(
         'locale_block_unique', 'UNIQUE(block_id, locale_id)',
         'A translation for this locale already exists for this block.',
-    )]
-
-
-class ArletContentBlockCard(models.Model):
-    _name = 'arlet.content.block.card'
-    _description = 'Content Block Card Item'
-    _order = 'sequence asc'
-    _inherit = ['arlet.translatable.mixin']
-
-    block_id = fields.Many2one('arlet.content.block', required=True, ondelete='cascade')
-    sequence = fields.Integer(default=10)
-    title = fields.Char(string='Title')
-    html = fields.Html(string='Body HTML')
-    translation_ids = fields.One2many('arlet.content.block.card.translation', 'card_id', string='Translations')
-
-
-class ArletContentBlockCardTranslation(models.Model):
-    _name = 'arlet.content.block.card.translation'
-    _description = 'Content Block Card Translation'
-    _inherit = ['arlet.base.translation']
-
-    card_id = fields.Many2one('arlet.content.block.card', required=True, ondelete='cascade')
-    title = fields.Char(string='Title')
-    html = fields.Html(string='Body HTML')
-
-    _sql_constraints = [(
-        'locale_card_unique', 'UNIQUE(card_id, locale_id)',
-        'A translation for this locale already exists for this card.',
     )]
 
 

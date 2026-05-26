@@ -50,6 +50,7 @@
                             <field name="bg"/>
                             <field name="text_color"/>
                             <field name="padding_y"/>
+                            <field name="text_align" invisible="type != 'text'"/>
                             <field name="image_position" invisible="type not in ('split', 'half', 'testimonial')"/>
                         </group>
                         <group string="Media" invisible="type not in ('cover', 'split', 'testimonial', 'image')">
@@ -97,14 +98,6 @@
                                     <field name="locale"/>
                                     <field name="title"/>
                                     <field name="subtitle"/>
-                                </list>
-                            </field>
-                        </page>
-                        <page string="Cards (EN)" invisible="type != 'cards'">
-                            <field name="card_ids">
-                                <list string="Cards" editable="bottom">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="title"/>
                                 </list>
                             </field>
                         </page>
