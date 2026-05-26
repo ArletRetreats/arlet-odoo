@@ -117,7 +117,6 @@ class ArletContentBlock(models.Model):
         ('location', 'Location — image + description'),
         ('program',  'Program — event schedule grid'),
         ('form',     'Form — embedded HubSpot form'),
-        ('cards',    'Cards — 2-column grid of titled sections'),
     ], string='Block Type', required=True)
 
     # Image / background
