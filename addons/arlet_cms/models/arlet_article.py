@@ -108,7 +108,7 @@ class ArletContentBlock(models.Model):
         ('cover',    'Cover — full-width bg image + text'),
         ('split',    'Split — image + text side by side'),
         ('half',     'Half — two-column text only'),
-        ('text',     'Text — centered single column'),
+        ('text',     'Text — single column (center / left)'),
         ('image',    'Image — full-width, no text'),
         ('occasion', 'Occasion — two-column list'),
         ('profile',  'Profile — single person card'),
@@ -143,8 +143,12 @@ class ArletContentBlock(models.Model):
     text_align = fields.Selection([
         ('center', 'Center (max-width)'),
         ('left',   'Left'),
-        ('right',  'Right'),
     ], string='Text Align', default='center')
+    padding_x = fields.Selection([
+        ('small',  'Small'),
+        ('medium', 'Medium'),
+        ('large',  'Large'),
+    ], string='Padding X')
 
     # EN base text values
     title = fields.Char(string='Title')
@@ -176,7 +180,7 @@ class ArletContentBlock(models.Model):
         for attr, key in [
             ('image_alt', 'imageAlt'),
             ('image_position', 'imagePosition'), ('bg', 'bg'), ('text_color', 'textColor'),
-            ('padding_y', 'paddingY'), ('text_align', 'textAlign'),
+            ('padding_y', 'paddingY'), ('padding_x', 'paddingX'), ('text_align', 'textAlign'),
         ]:
             val = getattr(self, attr, None)
             if val:
