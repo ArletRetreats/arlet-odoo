@@ -10,4 +10,4 @@ class ArletLocale(models.Model):
     code = fields.Char(string='Code', required=True, help='ISO language code, e.g. "fr"')
     name = fields.Char(string='Language Name', required=True, help='e.g. "French"')
 
-    code_unique = models.Constraint('UNIQUE(code)', 'This locale code already exists.')
+    _code_unique = models.Constraint('UNIQUE(code)', 'This locale code already exists.')
