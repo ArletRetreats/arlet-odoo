@@ -293,6 +293,7 @@ class ArletArticle(models.Model):
         required=True,
         default='draft',
     )
+    featured = fields.Boolean(string='Featured', default=False)
     # Detail page
     hero_bg = fields.Image(string='Hero BG', max_width=0, max_height=0)
     hero_bg_alt = fields.Char(string='Hero BG Alt')
@@ -322,6 +323,7 @@ class ArletArticle(models.Model):
             'image': self._img_url('image'),
             'slug': self.slug or '',
             'status': self.status,
+            'featured': self.featured,
         }
 
     def to_list_api_dict(self, locale='en'):
