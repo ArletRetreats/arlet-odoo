@@ -53,6 +53,7 @@
                             <field name="padding_x"/>
                             <field name="text_align" invisible="type != 'text'"/>
                             <field name="image_position" invisible="type not in ('split', 'half', 'testimonial')"/>
+                            <field name="image_padding" invisible="type not in ('split', 'location')"/>
                         </group>
                         <group string="Media" invisible="type not in ('cover', 'split', 'testimonial', 'image')">
                             <field name="bg_image" widget="image" options="{'size': [128, 128]}" invisible="type != 'cover'"/>
