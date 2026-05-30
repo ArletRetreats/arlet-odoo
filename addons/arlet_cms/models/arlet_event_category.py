@@ -15,7 +15,7 @@ class ArletEventCategory(models.Model):
         help='Auto-generated lowercase key derived from the Name. Used in the API response.',
     )
 
-    key_unique = models.Constraint('UNIQUE(key)', 'A category with this key already exists.')
+    _key_unique = models.Constraint('UNIQUE(key)', 'A category with this key already exists.')
 
     @api.depends('name')
     def _compute_key(self):
