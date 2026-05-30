@@ -44,7 +44,7 @@ class ArletEvent(models.Model):
     translation_ids = fields.One2many('arlet.event.translation', 'event_id', string='Translations')
 
     _constraints = [
-        models.Constraint('slug_unique', 'UNIQUE(slug)', 'An event with this slug already exists.'),
+        models.Constraint('UNIQUE(slug)', 'An event with this slug already exists.'),
     ]
 
     @api.depends('name')
@@ -126,7 +126,7 @@ class ArletEventTranslation(models.Model):
     description = fields.Text(string='Description')
 
     _constraints = [
-        models.Constraint('locale_event_unique', 'UNIQUE(event_id, locale_id)', 'A translation for this locale already exists for this event.'),
+        models.Constraint('UNIQUE(event_id, locale_id)', 'A translation for this locale already exists for this event.'),
     ]
 
 
@@ -170,7 +170,7 @@ class ArletEventProgramDayTranslation(models.Model):
     theme = fields.Char(string='Day Theme')
 
     _constraints = [
-        models.Constraint('locale_day_unique', 'UNIQUE(day_id, locale_id)', 'A translation for this locale already exists for this day.'),
+        models.Constraint('UNIQUE(day_id, locale_id)', 'A translation for this locale already exists for this day.'),
     ]
 
 
@@ -209,5 +209,5 @@ class ArletEventProgramSlotTranslation(models.Model):
     activity = fields.Char(string='Activity')
 
     _constraints = [
-        models.Constraint('locale_slot_unique', 'UNIQUE(slot_id, locale_id)', 'A translation for this locale already exists for this slot.'),
+        models.Constraint('UNIQUE(slot_id, locale_id)', 'A translation for this locale already exists for this slot.'),
     ]

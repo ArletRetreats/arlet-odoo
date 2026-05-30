@@ -18,7 +18,7 @@ class ArletHubspotForm(models.Model):
     fields_json = fields.Json(string='Fields', readonly=True)
 
     _constraints = [
-        models.Constraint('guid_unique', 'UNIQUE(guid)', 'A form with this GUID already exists.'),
+        models.Constraint('UNIQUE(guid)', 'A form with this GUID already exists.'),
     ]
 
     @api.model

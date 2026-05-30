@@ -16,7 +16,7 @@ class ArletEventCategory(models.Model):
     )
 
     _constraints = [
-        models.Constraint('key_unique', 'UNIQUE(key)', 'A category with this key already exists.'),
+        models.Constraint('UNIQUE(key)', 'A category with this key already exists.'),
     ]
 
     @api.depends('name')

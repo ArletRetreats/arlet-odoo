@@ -62,7 +62,7 @@ class ArletPageConfig(models.Model):
     )
 
     _constraints = [
-        models.Constraint('page_key_unique', 'UNIQUE(page_key)', 'A configuration record for this page already exists.'),
+        models.Constraint('UNIQUE(page_key)', 'A configuration record for this page already exists.'),
     ]
 
     def to_api_dict(self, locale='en'):
