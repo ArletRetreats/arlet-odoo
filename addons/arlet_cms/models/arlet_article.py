@@ -126,6 +126,11 @@ class ArletContentBlock(models.Model):
     image_position = fields.Selection(
         [('left', 'Left'), ('right', 'Right')], string='Image Position',
     )
+    image_padding = fields.Selection([
+        ('small',  'Small'),
+        ('medium', 'Medium'),
+        ('large',  'Large'),
+    ], string='Image Padding', help='Insets the image from the section edge. Applies to type=split and type=location.')
 
     # Styling
     bg = fields.Selection([
@@ -179,7 +184,7 @@ class ArletContentBlock(models.Model):
 
         for attr, key in [
             ('image_alt', 'imageAlt'),
-            ('image_position', 'imagePosition'), ('bg', 'bg'), ('text_color', 'textColor'),
+            ('image_position', 'imagePosition'), ('image_padding', 'imagePadding'), ('bg', 'bg'), ('text_color', 'textColor'),
             ('padding_y', 'paddingY'), ('padding_x', 'paddingX'), ('text_align', 'textAlign'),
         ]:
             val = getattr(self, attr, None)
