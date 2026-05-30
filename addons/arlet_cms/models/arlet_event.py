@@ -26,6 +26,7 @@ class ArletEvent(models.Model):
         help='Auto-generated from the Internal Name.',
     )
     coming_soon = fields.Boolean(string='Coming Soon', default=False)
+    featured = fields.Boolean(string='Featured', default=False)
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date', required=True)
     program_ids = fields.One2many('arlet.event.program.day', 'event_id', string='Program')
@@ -66,6 +67,7 @@ class ArletEvent(models.Model):
             'image': self._img_url('image'),
             'slug': self.slug or '',
             'comingSoon': self.coming_soon,
+            'featured': self.featured,
         }
         if self.owner_id:
             data['owner'] = {

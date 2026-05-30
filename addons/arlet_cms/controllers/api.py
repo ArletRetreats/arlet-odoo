@@ -114,7 +114,7 @@ class ArletApiController(http.Controller):
         csrf=False,
         cors=_CORS,
     )
-    def list_articles(self, locale='en', q='', page='', limit='12', **kwargs):
+    def list_articles(self, locale='en', q='', page='', limit='12', featured='', **kwargs):
         err = self._check_api_key()
         if err:
             return err
@@ -122,6 +122,8 @@ class ArletApiController(http.Controller):
         domain = []
         if q:
             domain += [('title', 'ilike', q)]
+        if featured == 'true':
+            domain += [('featured', '=', True)]
         all_articles = request.env['arlet.article'].sudo().search(domain)
         # Paginate when page param is provided
         if page:

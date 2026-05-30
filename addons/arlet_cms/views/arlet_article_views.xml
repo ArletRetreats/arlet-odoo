@@ -186,6 +186,7 @@
             <list string="Articles">
                 <field name="name"/>
                 <field name="status"/>
+                <field name="featured"/>
                 <field name="title"/>
                 <field name="badge"/>
                 <field name="published_at"/>
@@ -209,6 +210,7 @@
                         <group string="General">
                             <field name="name"/>
                             <field name="status"/>
+                            <field name="featured"/>
                             <field name="published_at"/>
                             <field name="author"/>
                             <field name="location"/>
