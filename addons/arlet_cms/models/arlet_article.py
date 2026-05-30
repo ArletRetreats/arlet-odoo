@@ -33,10 +33,9 @@ class ArletProfile(models.Model):
     link_ids = fields.One2many('arlet.profile.link', 'profile_id', string='Links')
     translation_ids = fields.One2many('arlet.profile.translation', 'profile_id', string='Translations')
 
-    _sql_constraints = [(
-        'slug_unique', 'UNIQUE(slug)',
-        'A profile with this slug already exists.',
-    )]
+    _constraints = [
+        models.Constraint('slug_unique', 'UNIQUE(slug)', 'A profile with this slug already exists.'),
+    ]
 
     @api.depends('name')
     def _compute_slug(self):
@@ -70,10 +69,9 @@ class ArletProfileTranslation(models.Model):
     list_label = fields.Char(string='Certifications Label')
     list_items = fields.Text(string='Certifications — one per line')
 
-    _sql_constraints = [(
-        'locale_profile_unique', 'UNIQUE(profile_id, locale_id)',
-        'A translation for this locale already exists for this profile.',
-    )]
+    _constraints = [
+        models.Constraint('locale_profile_unique', 'UNIQUE(profile_id, locale_id)', 'A translation for this locale already exists for this profile.'),
+    ]
 
 
 class ArletProfileLink(models.Model):
@@ -265,10 +263,9 @@ class ArletContentBlockTranslation(models.Model):
     left_items = fields.Text(string='Left Items — one per line')
     right_items = fields.Text(string='Right Items — one per line')
 
-    _sql_constraints = [(
-        'locale_block_unique', 'UNIQUE(block_id, locale_id)',
-        'A translation for this locale already exists for this block.',
-    )]
+    _constraints = [
+        models.Constraint('locale_block_unique', 'UNIQUE(block_id, locale_id)', 'A translation for this locale already exists for this block.'),
+    ]
 
 
 class ArletArticle(models.Model):
@@ -305,10 +302,9 @@ class ArletArticle(models.Model):
     content_ids = fields.One2many('arlet.content.block', 'article_id', string='Content Blocks')
     translation_ids = fields.One2many('arlet.article.translation', 'article_id', string='Translations')
 
-    _sql_constraints = [(
-        'slug_unique', 'UNIQUE(slug)',
-        'An article with this slug already exists.',
-    )]
+    _constraints = [
+        models.Constraint('slug_unique', 'UNIQUE(slug)', 'An article with this slug already exists.'),
+    ]
 
     @api.depends('name')
     def _compute_slug(self):
@@ -374,7 +370,6 @@ class ArletArticleTranslation(models.Model):
     description = fields.Text(string='Description / Excerpt')
     intro = fields.Text(string='Intro Paragraphs — one per line')
 
-    _sql_constraints = [(
-        'locale_article_unique', 'UNIQUE(article_id, locale_id)',
-        'A translation for this locale already exists for this article.',
-    )]
+    _constraints = [
+        models.Constraint('locale_article_unique', 'UNIQUE(article_id, locale_id)', 'A translation for this locale already exists for this article.'),
+    ]

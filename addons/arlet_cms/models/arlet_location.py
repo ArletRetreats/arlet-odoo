@@ -31,10 +31,9 @@ class ArletLocation(models.Model):
     content_ids = fields.One2many('arlet.content.block', 'location_article_id', string='Content Blocks')
     translation_ids = fields.One2many('arlet.location.translation', 'location_id', string='Translations')
 
-    _sql_constraints = [(
-        'slug_unique', 'UNIQUE(slug)',
-        'A location with this slug already exists.',
-    )]
+    _constraints = [
+        models.Constraint('slug_unique', 'UNIQUE(slug)', 'A location with this slug already exists.'),
+    ]
 
     @api.depends('name')
     def _compute_slug(self):
@@ -82,7 +81,6 @@ class ArletLocationTranslation(models.Model):
     subtitle = fields.Char(string='Subtitle')
     html = fields.Html(string='Description')
 
-    _sql_constraints = [(
-        'locale_location_unique', 'UNIQUE(location_id, locale_id)',
-        'A translation for this locale already exists for this location.',
-    )]
+    _constraints = [
+        models.Constraint('locale_location_unique', 'UNIQUE(location_id, locale_id)', 'A translation for this locale already exists for this location.'),
+    ]

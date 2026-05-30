@@ -61,10 +61,9 @@ class ArletPageConfig(models.Model):
         help='Events shown as cards on this page (e.g. Join the Arlet Experience section).',
     )
 
-    _sql_constraints = [(
-        'page_key_unique', 'UNIQUE(page_key)',
-        'A configuration record for this page already exists.',
-    )]
+    _constraints = [
+        models.Constraint('page_key_unique', 'UNIQUE(page_key)', 'A configuration record for this page already exists.'),
+    ]
 
     def to_api_dict(self, locale='en'):
         data = {'pageKey': self.page_key}

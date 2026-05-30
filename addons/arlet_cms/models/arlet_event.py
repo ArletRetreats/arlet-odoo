@@ -43,10 +43,9 @@ class ArletEvent(models.Model):
     content_ids = fields.One2many('arlet.content.block', 'event_article_id', string='Content Blocks')
     translation_ids = fields.One2many('arlet.event.translation', 'event_id', string='Translations')
 
-    _sql_constraints = [(
-        'slug_unique', 'UNIQUE(slug)',
-        'An event with this slug already exists.',
-    )]
+    _constraints = [
+        models.Constraint('slug_unique', 'UNIQUE(slug)', 'An event with this slug already exists.'),
+    ]
 
     @api.depends('name')
     def _compute_slug(self):
@@ -126,10 +125,9 @@ class ArletEventTranslation(models.Model):
     location = fields.Char(string='Location')
     description = fields.Text(string='Description')
 
-    _sql_constraints = [(
-        'locale_event_unique', 'UNIQUE(event_id, locale_id)',
-        'A translation for this locale already exists for this event.',
-    )]
+    _constraints = [
+        models.Constraint('locale_event_unique', 'UNIQUE(event_id, locale_id)', 'A translation for this locale already exists for this event.'),
+    ]
 
 
 class ArletEventProgramDay(models.Model):
@@ -171,10 +169,9 @@ class ArletEventProgramDayTranslation(models.Model):
     date_label = fields.Char(string='Date Label')
     theme = fields.Char(string='Day Theme')
 
-    _sql_constraints = [(
-        'locale_day_unique', 'UNIQUE(day_id, locale_id)',
-        'A translation for this locale already exists for this day.',
-    )]
+    _constraints = [
+        models.Constraint('locale_day_unique', 'UNIQUE(day_id, locale_id)', 'A translation for this locale already exists for this day.'),
+    ]
 
 
 class ArletEventProgramSlot(models.Model):
@@ -211,7 +208,6 @@ class ArletEventProgramSlotTranslation(models.Model):
     slot_id = fields.Many2one('arlet.event.program.slot', required=True, ondelete='cascade')
     activity = fields.Char(string='Activity')
 
-    _sql_constraints = [(
-        'locale_slot_unique', 'UNIQUE(slot_id, locale_id)',
-        'A translation for this locale already exists for this slot.',
-    )]
+    _constraints = [
+        models.Constraint('locale_slot_unique', 'UNIQUE(slot_id, locale_id)', 'A translation for this locale already exists for this slot.'),
+    ]
