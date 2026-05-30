@@ -123,7 +123,7 @@ class ArletEventTranslation(models.Model):
     location = fields.Char(string='Location')
     description = fields.Text(string='Description')
 
-    _locale_event_unique = models.Constraint('UNIQUE(event_id, locale_id)', 'A translation for this locale already exists for this event.')
+    _locale_event_unique = models.Constraint('UNIQUE(event_id, locale)', 'A translation for this locale already exists for this event.')
 
 
 class ArletEventProgramDay(models.Model):
@@ -165,7 +165,7 @@ class ArletEventProgramDayTranslation(models.Model):
     date_label = fields.Char(string='Date Label')
     theme = fields.Char(string='Day Theme')
 
-    _locale_day_unique = models.Constraint('UNIQUE(day_id, locale_id)', 'A translation for this locale already exists for this day.')
+    _locale_day_unique = models.Constraint('UNIQUE(day_id, locale)', 'A translation for this locale already exists for this day.')
 
 
 class ArletEventProgramSlot(models.Model):
@@ -202,4 +202,4 @@ class ArletEventProgramSlotTranslation(models.Model):
     slot_id = fields.Many2one('arlet.event.program.slot', required=True, ondelete='cascade')
     activity = fields.Char(string='Activity')
 
-    _locale_slot_unique = models.Constraint('UNIQUE(slot_id, locale_id)', 'A translation for this locale already exists for this slot.')
+    _locale_slot_unique = models.Constraint('UNIQUE(slot_id, locale)', 'A translation for this locale already exists for this slot.')

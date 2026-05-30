@@ -79,4 +79,4 @@ class ArletLocationTranslation(models.Model):
     subtitle = fields.Char(string='Subtitle')
     html = fields.Html(string='Description')
 
-    _locale_location_unique = models.Constraint('UNIQUE(location_id, locale_id)', 'A translation for this locale already exists for this location.')
+    _locale_location_unique = models.Constraint('UNIQUE(location_id, locale)', 'A translation for this locale already exists for this location.')
