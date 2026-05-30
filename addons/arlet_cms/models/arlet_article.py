@@ -34,7 +34,7 @@ class ArletProfile(models.Model):
     translation_ids = fields.One2many('arlet.profile.translation', 'profile_id', string='Translations')
 
     _constraints = [
-        models.Constraint('slug_unique', 'UNIQUE(slug)', 'A profile with this slug already exists.'),
+        models.Constraint('UNIQUE(slug)', 'A profile with this slug already exists.'),
     ]
 
     @api.depends('name')
@@ -70,7 +70,7 @@ class ArletProfileTranslation(models.Model):
     list_items = fields.Text(string='Certifications — one per line')
 
     _constraints = [
-        models.Constraint('locale_profile_unique', 'UNIQUE(profile_id, locale_id)', 'A translation for this locale already exists for this profile.'),
+        models.Constraint('UNIQUE(profile_id, locale_id)', 'A translation for this locale already exists for this profile.'),
     ]
 
 
@@ -264,7 +264,7 @@ class ArletContentBlockTranslation(models.Model):
     right_items = fields.Text(string='Right Items — one per line')
 
     _constraints = [
-        models.Constraint('locale_block_unique', 'UNIQUE(block_id, locale_id)', 'A translation for this locale already exists for this block.'),
+        models.Constraint('UNIQUE(block_id, locale_id)', 'A translation for this locale already exists for this block.'),
     ]
 
 
@@ -303,7 +303,7 @@ class ArletArticle(models.Model):
     translation_ids = fields.One2many('arlet.article.translation', 'article_id', string='Translations')
 
     _constraints = [
-        models.Constraint('slug_unique', 'UNIQUE(slug)', 'An article with this slug already exists.'),
+        models.Constraint('UNIQUE(slug)', 'An article with this slug already exists.'),
     ]
 
     @api.depends('name')
@@ -371,5 +371,5 @@ class ArletArticleTranslation(models.Model):
     intro = fields.Text(string='Intro Paragraphs — one per line')
 
     _constraints = [
-        models.Constraint('locale_article_unique', 'UNIQUE(article_id, locale_id)', 'A translation for this locale already exists for this article.'),
+        models.Constraint('UNIQUE(article_id, locale_id)', 'A translation for this locale already exists for this article.'),
     ]
