@@ -67,7 +67,7 @@ class ArletProfileTranslation(models.Model):
     list_label = fields.Char(string='Certifications Label')
     list_items = fields.Text(string='Certifications — one per line')
 
-    _locale_profile_unique = models.Constraint('UNIQUE(profile_id, locale_id)', 'A translation for this locale already exists for this profile.')
+    _locale_profile_unique = models.Constraint('UNIQUE(profile_id, locale)', 'A translation for this locale already exists for this profile.')
 
 
 class ArletProfileLink(models.Model):
@@ -259,7 +259,7 @@ class ArletContentBlockTranslation(models.Model):
     left_items = fields.Text(string='Left Items — one per line')
     right_items = fields.Text(string='Right Items — one per line')
 
-    _locale_block_unique = models.Constraint('UNIQUE(block_id, locale_id)', 'A translation for this locale already exists for this block.')
+    _locale_block_unique = models.Constraint('UNIQUE(block_id, locale)', 'A translation for this locale already exists for this block.')
 
 
 class ArletArticle(models.Model):
@@ -362,4 +362,4 @@ class ArletArticleTranslation(models.Model):
     description = fields.Text(string='Description / Excerpt')
     intro = fields.Text(string='Intro Paragraphs — one per line')
 
-    _locale_article_unique = models.Constraint('UNIQUE(article_id, locale_id)', 'A translation for this locale already exists for this article.')
+    _locale_article_unique = models.Constraint('UNIQUE(article_id, locale)', 'A translation for this locale already exists for this article.')

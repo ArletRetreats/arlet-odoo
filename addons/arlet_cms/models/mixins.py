@@ -11,6 +11,7 @@ class ArletTranslatableMixin(models.AbstractModel):
     pointing to a model that inherits `arlet.base.translation`.
     """
     _name = 'arlet.translatable.mixin'
+    _description = 'Translatable Mixin'
 
     def _t(self, field_name, locale):
         """Return field value for locale, falling back to the EN base value."""
@@ -40,6 +41,7 @@ class ArletBaseTranslation(models.AbstractModel):
     all translation models inherit it automatically.
     """
     _name = 'arlet.base.translation'
+    _description = 'Base Translation'
     _rec_name = 'locale'
 
     locale = fields.Many2one(
